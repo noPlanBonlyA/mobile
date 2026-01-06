@@ -1,0 +1,108 @@
+services:
+  db:
+    image: postgres:17-bookworm
+    container_name: school_stie_db
+    environment:
+      POSTGRES_DB: '${DB_DATABASE}'
+      POSTGRES_USER: '${DB_USER}'
+      POSTGRES_PASSWORD: '${DB_PASSWORD}'
+    restart: unless-stopped
+    ports:
+      - "5435:5432"
+    networks:
+      - shool_site-network
+    volumes:
+      - shool_site_data:/var/lib/postgresql/data
+
+  email_db:
+    image: postgres:17-bookworm
+    container_name: email_db
+    environment:
+      POSTGRES_DB: '${DB_DATABASE}'
+      POSTGRES_USER: '${DB_USER}'
+      POSTGRES_PASSWORD: '${DB_PASSWORD}'
+    restart: unless-stopped
+    ports:
+      - "5436:5432"
+    networks:
+      - shool_site-network
+    volumes:
+      - email_data:/var/lib/postgresql/data
+
+  main-app:
+    build:
+      context: .
+      dockerfile: ./docker/backend/Dockerfile
+
+    container_name: school_stie_backend
+    restart: unless-stopped
+    expose:
+      - 8080
+    ports:
+      - "8080:8080"
+    entrypoint: /docker/entrypoint.sh
+    depends_on:
+      - db
+    volumes: 
+      - ./backendITSchool/.:/app/
+    networks:
+      - shool_site-network
+  
+  email-app:
+    build:
+      context: .
+      dockerfile: ./docker/email/Dockerfile
+
+    container_name: school_stie_eamil_notifier
+    restart: unless-stopped
+    expose:
+      - 9090
+    ports:
+      - "9090:9090"
+    entrypoint: /docker/entrypoint.sh
+    depends_on:
+      - email_db
+    volumes: 
+      - ./backendNotificationEmailService/.:/app/
+    networks:
+      - shool_site-network
+  frontend:
+    build:
+      context: .
+      dockerfile: ./docker/frontend/Dockerfile
+
+    container_name: school_site_nginx_frontend
+    restart: unless-stopped
+    expose:
+      - 80
+      - 443
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - main-app
+    networks:
+      - shool_site-network
+  minio:
+    image: minio/minio:latest
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server --console-address ":9001" /data
+    networks:             
+    - shool_site-network
+
+
+networks:
+  shool_site-network:
+    driver: bridge
+
+volumes:
+  shool_site_data:
+  minio_data:
+  email_data:
