@@ -1,0 +1,1196 @@
+/* EventModal.css - Современный дизайн модального окна события */
+
+.event-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.event-modal {
+  background: linear-gradient(145deg, #ffffff 0%, #fafbfc 100%);
+  border-radius: 24px;
+  box-shadow: 
+    0 32px 64px rgba(15, 23, 42, 0.25),
+    0 0 0 1px rgba(148, 163, 184, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  padding: 0;
+  max-width: 800px;
+  width: 95%;
+  max-height: 92vh;
+  margin-left: 20%;
+  overflow: hidden;
+  position: relative;
+  animation: slideInUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  font-size: 22px;
+  cursor: pointer;
+  color: #1e293b;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10;
+  font-weight: 600;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-close-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+  box-shadow: 0 8px 16px rgba(239, 68, 68, 0.15);
+}
+
+.event-modal-content {
+  padding: 0;
+  overflow-y: auto;
+  max-height: 95vh;
+  scroll-behavior: smooth;
+}
+
+/* Красивый заголовок с нашим цветом */
+.event-modal-header {
+  background: #00B18F;
+  padding: 40px 48px;
+  padding-top: 48px;
+  padding-bottom: 36px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.event-modal-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.event-modal-title {
+  margin: 0 0 24px 0;
+  font-size: 32px;
+  color: #ffffff;
+  line-height: 1.3;
+  font-weight: 700;
+  text-align: center;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.event-modal-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  justify-content: center;
+  min-width: 160px;
+}
+
+.event-modal-status.opened {
+  background: rgba(34, 197, 94, 0.2);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+}
+
+.event-modal-status.closed {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+/* Основной контент */
+.event-modal-info {
+  padding: 40px 48px;
+  padding-bottom: 32px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.info-item {
+  background: linear-gradient(135deg, rgba(248, 250, 252, 0.8) 0%, rgba(241, 245, 249, 0.6) 100%);
+  border-radius: 20px;
+  padding: 32px 40px;
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.info-item:hover {
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+  border-color: rgba(0, 177, 143, 0.2);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.8) 100%);
+}
+
+.info-label {
+  font-weight: 600;
+  color: #475569;
+  font-size: 16px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.info-value {
+  color: #0f172a;
+  font-size: 20px;
+  line-height: 1.5;
+  font-weight: 600;
+  text-align: center;
+  padding-left: 0 !important;
+  width: 100%;
+  min-height: 30px;
+}
+
+/* Описание */
+.event-modal-description {
+  margin: 0 48px 32px;
+  padding: 40px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.04) 0%, rgba(147, 51, 234, 0.06) 100%);
+  border-radius: 20px;
+  border: 1px solid rgba(59, 130, 246, 0.1);
+  position: relative;
+  overflow: hidden;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.event-modal-description::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #3b82f6 0%, #8b5cf6 100%);
+  border-radius: 0 2px 2px 0;
+}
+
+.event-modal-description h3 {
+  margin: 0 0 24px 0;
+  font-weight: 700;
+  color: #0f172a;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.event-modal-description p {
+  margin: 0;
+  color: #475569;
+  line-height: 1.6;
+  font-size: 18px;
+  padding-left: 0 !important;
+  font-weight: 500;
+  text-align: center;
+  width: 100%;
+}
+
+/* Кнопки действий */
+.event-modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  padding: 32px 48px 40px;
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.5) 0%, rgba(255, 255, 255, 0.8) 100%);
+  border-top: 1px solid rgba(148, 163, 184, 0.1);
+  text-align: center;
+  overflow: visible; /* Разрешаем отображение теней */
+}
+
+.event-btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 20px 48px;
+  min-width: 240px;
+  min-height: 64px;
+  
+  background: #00B18F;
+  box-shadow: 
+    0 8px 16px rgba(0, 177, 143, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border-radius: 18px;
+  border: none;
+  
+  font-style: normal;
+  font-weight: 700;
+  font-size: 17px;
+  color: #FFFFFF;
+  
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+.event-btn-primary:active {
+  box-shadow: 
+    0 4px 12px rgba(0, 177, 143, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Красивая кнопка для открытия/закрытия урока */
+.event-btn-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 20px 48px;
+  min-width: 240px;
+  min-height: 64px;
+  
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  box-shadow: 
+    0 8px 16px rgba(34, 197, 94, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border-radius: 18px;
+  border: none;
+  
+  font-style: normal;
+  font-weight: 700;
+  font-size: 17px;
+  color: #FFFFFF;
+  
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+.event-btn-secondary:active {
+  box-shadow: 
+    0 4px 12px rgba(34, 197, 94, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+
+
+
+
+
+/* Третья кнопка - провести урок (зелёная) - старые стили */
+
+
+
+
+
+
+
+/* Адаптивность для планшетов */
+@media (max-width: 768px) {
+  .event-modal {
+    width: 96%;
+    max-height: 92vh;
+    border-radius: 20px;
+  }
+  
+  .event-modal-header {
+    padding: 28px 24px 24px;
+    padding-top: 36px;
+  }
+  
+  .event-modal-title {
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+  
+  .event-modal-status {
+    padding: 10px 16px;
+    font-size: 12px;
+    gap: 6px;
+  }
+  
+  .event-modal-info {
+    padding: 24px;
+    padding-bottom: 20px;
+  }
+  
+  .info-item {
+    padding: 20px 24px;
+    border-radius: 14px;
+    min-height: 70px;
+  }
+  
+  .info-label {
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+  
+  .info-value {
+    font-size: 16px;
+  }
+  
+  .event-modal-description {
+    margin: 0 24px 20px;
+    padding: 24px;
+    border-radius: 14px;
+    min-height: 100px;
+  }
+  
+  .event-modal-description h3 {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .event-modal-description p {
+    font-size: 15px;
+  }
+  
+  .event-modal-actions {
+    display: flex !important;
+    padding: 20px 24px 28px;
+    flex-direction: column;
+    gap: 16px;
+    background: linear-gradient(180deg, rgba(248, 250, 252, 0.5) 0%, rgba(255, 255, 255, 0.8) 100%);
+    border-top: 1px solid rgba(148, 163, 184, 0.1);
+    text-align: center;
+  }
+  
+  .event-btn-primary,
+  .event-btn-secondary {
+    display: flex !important;
+    padding: 16px 32px;
+    font-size: 15px;
+    border-radius: 14px;
+    min-height: 52px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    text-align: center;
+    box-sizing: border-box;
+  }
+  
+  /* Стили для третьей кнопки в планшетной версии */
+  .event-btn-primary.conduct-lesson-btn,
+  .event-btn-primary:nth-child(3) {
+    display: flex !important;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    padding: 16px 32px;
+    font-size: 15px;
+    border-radius: 14px;
+    min-height: 52px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    text-align: center;
+    box-sizing: border-box;
+  }
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 480px) {
+  .event-modal {
+    width: 98%;
+    max-height: 95vh;
+    border-radius: 16px;
+    margin: 8px 0;
+  }
+  
+  .modal-close-btn {
+    top: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    border-radius: 10px;
+  }
+  
+  .event-modal-header {
+    padding: 24px 20px 20px;
+    padding-top: 32px;
+  }
+  
+  .event-modal-title {
+    font-size: 20px;
+    margin-bottom: 14px;
+    line-height: 1.2;
+  }
+  
+  .event-modal-status {
+    padding: 8px 14px;
+    font-size: 11px;
+    gap: 5px;
+    border-radius: 16px;
+  }
+  
+  .event-modal-info {
+    padding: 20px;
+    padding-bottom: 16px;
+  }
+  
+  .info-grid {
+    gap: 12px;
+  }
+  
+  .info-item {
+    padding: 18px 20px;
+    border-radius: 12px;
+    min-height: 65px;
+  }
+  
+  .info-label {
+    font-size: 12px;
+    margin-bottom: 8px;
+    gap: 6px;
+  }
+  
+  .info-value {
+    font-size: 15px;
+    font-weight: 600;
+  }
+  
+  .event-modal-description {
+    margin: 0 20px 16px;
+    padding: 20px;
+    border-radius: 12px;
+    min-height: 80px;
+  }
+  
+  .event-modal-description h3 {
+    font-size: 15px;
+    margin-bottom: 12px;
+    gap: 6px;
+  }
+  
+  .event-modal-description p {
+    font-size: 14px;
+    padding-left: 0 !important;
+    line-height: 1.5;
+    text-align: center !important;
+  }
+  
+  .event-modal-actions {
+    display: flex !important;
+    padding: 16px 20px 24px;
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+    background: linear-gradient(180deg, rgba(248, 250, 252, 0.5) 0%, rgba(255, 255, 255, 0.8) 100%);
+    border-top: 1px solid rgba(148, 163, 184, 0.1);
+    text-align: center;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  .event-btn-primary,
+  .event-btn-secondary {
+    display: flex !important;
+    padding: 14px 24px;
+    font-size: 14px;
+    width: 100%;
+    border-radius: 12px;
+    gap: 8px;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-sizing: border-box;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  /* Стили для третьей кнопки в мобильной версии */
+  .event-btn-primary.conduct-lesson-btn,
+  .event-btn-primary:nth-child(3) {
+    display: flex !important;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    padding: 14px 24px;
+    font-size: 14px;
+    width: 100%;
+    border-radius: 12px;
+    gap: 8px;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-sizing: border-box;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  .event-btn-primary.conduct-lesson-btn:hover,
+  .event-btn-primary:nth-child(3):hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  }
+}
+
+/* Красивый скроллбар для модального окна */
+.event-modal-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.event-modal-content::-webkit-scrollbar-track {
+  background: rgba(148, 163, 184, 0.1);
+  border-radius: 10px;
+  margin: 8px 0;
+}
+
+.event-modal-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, rgba(0, 177, 143, 0.3) 0%, rgba(3, 105, 161, 0.5) 100%);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.event-modal-content::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, rgba(0, 177, 143, 0.5) 0%, rgba(3, 105, 161, 0.7) 100%);
+}
+
+/* Стили для модального окна проведения урока */
+.modal-overlay.conduct-lesson-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10001;
+  animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal-content.large {
+  background: linear-gradient(145deg, #ffffff 0%, #fafbfc 100%);
+  border-radius: 24px;
+  box-shadow: 
+    0 32px 64px rgba(15, 23, 42, 0.3),
+    0 0 0 1px rgba(148, 163, 184, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  padding: 0;
+  max-width: 1000px;
+  width: 95%;
+  max-height: calc(100vh - 40px);
+  overflow: hidden;
+  position: relative;
+  animation: slideInUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 24px 32px;
+  border-radius: 24px 24px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  text-align: center;
+}
+
+.close-modal {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.close-modal:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.modal-body {
+  padding: 32px;
+  max-height: calc(95vh - 200px);
+  overflow-y: auto;
+}
+
+.conduct-lesson-content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.homework-upload-section {
+  background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%);
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid #e2e8f0;
+}
+
+.homework-upload-section h3 {
+  margin: 0 0 20px 0;
+  color: #334155;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.homework-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.homework-form input,
+.homework-form textarea {
+  padding: 12px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.homework-form input:focus,
+.homework-form textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.homework-form input[type="file"] {
+  padding: 8px 12px;
+  background: #f8fafc;
+}
+
+.homework-content-section h4,
+.homework-file-section h4 {
+  margin: 16px 0 8px 0;
+  color: #475569;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.students-grades-section {
+  background: linear-gradient(145deg, #fefefe 0%, #f8fafc 100%);
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid #e2e8f0;
+}
+
+.students-grades-section h3 {
+  margin: 0 0 20px 0;
+  color: #334155;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.students-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.student-grade-item {
+  background: white;
+  border: 2px solid #f1f5f9;
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.student-grade-item:hover {
+  border-color: #667eea;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.student-info h4 {
+  margin: 0 0 16px 0;
+  color: #1e293b;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.grade-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+.grade-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: #374151;
+  font-weight: 500;
+  text-align: center;
+  align-items: center;
+}
+
+.grade-controls input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-top: 4px;
+}
+
+.grade-controls input[type="number"],
+.grade-controls textarea {
+  padding: 8px 12px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.grade-controls input[type="number"]:focus,
+.grade-controls textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding-top: 24px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  justify-content: center;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+  color: white;
+}
+
+.btn-secondary:hover {
+  box-shadow: 0 8px 25px rgba(100, 116, 139, 0.4);
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #64748b;
+  text-align: center;
+}
+
+.loader {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e2e8f0;
+  border-top: 4px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Адаптивность для модального окна проведения урока */
+@media (max-width: 768px) {
+  .modal-overlay.conduct-lesson-modal .modal-content.large {
+    width: 95% !important;
+    max-height: 85vh !important;
+  }
+  
+  .modal-header {
+    padding: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .modal-body {
+    padding: 20px;
+  }
+  
+  .grade-controls {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal-actions {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* Мобильная версия для модального окна проведения урока */
+@media (max-width: 480px) {
+  .modal-overlay.conduct-lesson-modal {
+    padding: 80px 0 10px 0 !important;
+    overflow-y: auto !important;
+  }
+  
+  .modal-overlay.conduct-lesson-modal .modal-content.large {
+    width: 90% !important;
+    max-height: 85vh !important;
+    border-radius: 16px !important;
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    margin-top: 0 !important;
+  }
+  
+  .modal-overlay.conduct-lesson-modal .close-modal {
+    position: absolute !important;
+    top: -25px !important;
+    right: -25px !important;
+    z-index: 1003 !important;
+    background: #dc3545 !important;
+    color: white !important;
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 26px !important;
+    font-weight: bold !important;
+    padding: 0 !important;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3) !important;
+    border: none !important;
+    transition: all 0.3s ease !important;
+  }
+  
+  .modal-overlay.conduct-lesson-modal .close-modal:hover {
+    background: #c82333 !important;
+    transform: scale(1.05) !important;
+    box-shadow: 0 6px 16px rgba(220, 53, 69, 0.4) !important;
+  }
+  
+  .modal-overlay.conduct-lesson-modal .modal-header {
+    padding: 30px 16px 16px 16px !important;
+    flex-shrink: 0 !important;
+    border-radius: 16px 16px 0 0 !important;
+    text-align: center !important;
+  }
+  
+  .modal-overlay.conduct-lesson-modal .modal-header h2 {
+    font-size: 18px !important;
+    line-height: 1.3 !important;
+    margin: 0 !important;
+    text-align: center !important;
+  }
+  
+  .modal-overlay.conduct-lesson-modal .modal-body {
+    padding: 16px !important;
+    flex: 1 !important;
+    overflow-y: auto !important;
+    padding-bottom: 16px !important;
+  }
+  
+  .modal-overlay.conduct-lesson-modal .modal-actions {
+    position: relative !important;
+    bottom: auto !important;
+    background: white !important;
+    padding: 16px !important;
+    border-top: 2px solid #e2e8f0 !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+    border-radius: 0 0 16px 16px !important;
+    box-shadow: none !important;
+  }
+}
+
+/* Дополнительные стили для центрирования всех текстовых элементов в EventModal */
+.homework-form input::placeholder,
+.homework-form textarea::placeholder {
+  text-align: center;
+}
+
+.grade-controls input[type="number"] {
+  text-align: center;
+}
+
+.grade-controls textarea {
+  text-align: center;
+}
+
+.modal-actions p {
+  text-align: center !important;
+}
+
+/* Центрирование для всех параграфов в модальном окне */
+.event-modal p {
+  text-align: center !important;
+}
+
+/* Центрирование текста в мобильной версии */
+@media (max-width: 480px) {
+  .info-value {
+    padding-left: 0 !important;
+    text-align: center !important;
+  }
+  
+  .event-modal-description p {
+    padding-left: 0 !important;
+    text-align: center !important;
+  }
+  
+  .homework-form input,
+  .homework-form textarea {
+    text-align: center;
+  }
+  
+  .grade-controls input,
+  .grade-controls textarea {
+    text-align: center;
+  }
+}
+
+/* ДОПОЛНИТЕЛЬНЫЕ ПРИНУДИТЕЛЬНЫЕ СТИЛИ ДЛЯ МОБИЛЬНОЙ ВИДИМОСТИ */
+/* Обеспечиваем видимость кнопок в мобильной версии */
+
+@media (max-width: 768px) {
+  /* Принудительная видимость блока кнопок */
+  .event-modal-actions {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 100 !important;
+    background: linear-gradient(180deg, rgba(248, 250, 252, 0.5) 0%, rgba(255, 255, 255, 0.8) 100%) !important;
+    border-top: 1px solid rgba(148, 163, 184, 0.1) !important;
+    padding: 20px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    align-items: stretch !important;
+    justify-content: center !important;
+  }
+
+  /* Принудительная видимость всех кнопок */
+  .event-modal-actions .event-btn-primary,
+  .event-modal-actions .event-btn-secondary,
+  .event-modal-actions button {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 101 !important;
+    width: 100% !important;
+    min-height: 48px !important;
+    padding: 14px 20px !important;
+    font-size: 14px !important;
+    border-radius: 12px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    gap: 8px !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    border: none !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+  }
+
+  /* Специально для кнопки "Провести урок" */
+  .event-modal-actions .conduct-lesson-btn,
+  .event-modal-actions .event-btn-primary:nth-child(3) {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    color: white !important;
+    font-weight: 700 !important;
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Мобильная версия - еще более принудительные стили */
+  .event-modal-actions {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 100 !important;
+    background: linear-gradient(180deg, rgba(248, 250, 252, 0.9) 0%, rgba(255, 255, 255, 0.9) 100%) !important;
+    border-top: 2px solid rgba(148, 163, 184, 0.2) !important;
+    padding: 16px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    align-items: stretch !important;
+    justify-content: center !important;
+    min-height: 200px !important;
+  }
+
+  .event-modal-actions .event-btn-primary,
+  .event-modal-actions .event-btn-secondary,
+  .event-modal-actions button {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 101 !important;
+    width: 100% !important;
+    min-height: 50px !important;
+    padding: 16px 20px !important;
+    font-size: 14px !important;
+    border-radius: 12px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    gap: 8px !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  /* Особые стили для кнопки провести урок в мобильной версии */
+  .event-modal-actions .conduct-lesson-btn,
+  .event-modal-actions .event-btn-primary:nth-child(3) {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+    border: 2px solid rgba(255, 255, 255, 0.4) !important;
+  }
+
+  /* Стили для других кнопок */
+  .event-modal-actions .event-btn-primary:not(.conduct-lesson-btn):not(:nth-child(3)) {
+    background: #00B18F !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(0, 177, 143, 0.3) !important;
+  }
+
+  .event-modal-actions .event-btn-secondary {
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%) !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3) !important;
+  }
+
+  .event-modal-actions .event-btn-secondary.close-lesson {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3) !important;
+  }
+}

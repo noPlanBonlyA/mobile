@@ -1,0 +1,603 @@
+/* ---------------- базовый лэйаут ---------------- */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'Mont', 'Inter', 'Nunito Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  overflow-x: hidden;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #FFFFFF;
+  min-height: 100vh;
+  padding-top: 80px; /* Отступ от TopBar */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* ---------------- заголовок ---------------- */
+.page-title {
+  font-size: 36px;
+  font-weight: 800;
+  color: #1A1A1A;
+  margin: 24px 0;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 177, 143, 0.1);
+  letter-spacing: -1px;
+  font-family: 'Mont', sans-serif;
+}
+
+/* --------------- контейнер формы --------------- */
+.profile-page {
+  flex: 1;
+  padding: 0; /* Убираем все отступы */
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: auto;
+  overflow: visible;
+}
+
+.profile-form {
+  background: #FFFFFF;
+  border-radius: 0; /* Убираем скругление */
+  padding: 32px 48px 16px 48px; /* Уменьшаем отступы */
+  box-shadow: none; /* Убираем тень */
+  width: 100%;
+  max-width: none; /* Убираем ограничение ширины */
+  box-sizing: border-box;
+  border: none; /* Убираем границы */
+  animation: slideUp 0.6s ease-out;
+  display: flex;
+  flex-direction: column;
+  min-height: auto;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------- аватар + username --------------- */
+.avatar-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 32px; /* Уменьшаем отступ */
+  text-align: center;
+}
+
+.avatar-img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: linear-gradient(135deg, #E8F8F5 0%, #D1F2EB 100%);
+  border: 6px solid #FFFFFF;
+  box-shadow: 0 12px 24px rgba(0, 177, 143, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.avatar-img:hover {
+  transform: scale(1.05);
+}
+
+.username {
+  margin-top: 16px; /* Уменьшаем отступ */
+  font-size: 22px; /* Уменьшаем размер */
+  font-weight: 700;
+  color: #1A1A1A;
+  letter-spacing: -0.5px;
+  font-family: 'Mont', sans-serif;
+}
+
+/* ---------------- сетка полей ---------------- */
+.fields-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px; /* Уменьшаем отступ между полями */
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  animation: fadeIn 0.4s ease-out;
+  animation-fill-mode: both;
+}
+
+.field:nth-child(1) { animation-delay: 0.1s; }
+.field:nth-child(2) { animation-delay: 0.2s; }
+.field:nth-child(3) { animation-delay: 0.3s; }
+.field:nth-child(4) { animation-delay: 0.4s; }
+.field:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.field::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0, 177, 143, 0.3), transparent);
+  border-radius: 12px 12px 0 0;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  display: none; /* Убираем зеленую линию при наведении */
+}
+
+.field:hover::before {
+  background: linear-gradient(90deg, transparent, rgba(0, 177, 143, 0.4), transparent);
+  display: none; /* Убираем зеленую линию при наведении */
+}
+
+.field:hover::before {
+  opacity: 0; /* Убираем зеленую линию при наведении */
+  display: none; /* Убираем зеленую линию при наведении */
+}
+
+.field label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 12px;
+  font-family: 'Mont', sans-serif;
+}
+
+.input {
+  background: rgba(248, 252, 251, 0.8);
+  border: 2px solid rgba(0, 177, 143, 0.2);
+  border-radius: 12px;
+  padding: 16px 20px; /* Уменьшаем padding */
+  font-size: 16px; /* Уменьшаем размер шрифта */
+  font-weight: 500;
+  color: #1A1A1A;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 177, 143, 0.05);
+  font-family: 'Mont', sans-serif;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #00B18F;
+  box-shadow: 0 0 0 3px rgba(0, 177, 143, 0.1);
+  transform: translateY(-2px);
+}
+
+.input.read-only {
+  cursor: default;
+  user-select: text;
+  background: rgba(248, 252, 251, 0.6);
+  border-color: rgba(0, 177, 143, 0.15);
+}
+
+.input.read-only:hover {
+  border-color: rgba(0, 177, 143, 0.3);
+  box-shadow: 0 4px 8px rgba(0, 177, 143, 0.1);
+}
+
+.avatar-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.avatar-upload {
+  position: relative;
+}
+
+/* Fix: allow button shadows/decoration to be visible (prevent clipping) */
+.avatar-upload,
+.avatar-container {
+  overflow: visible !important;
+}
+
+.upload-button {
+  position: relative;
+  z-index: 5;
+  overflow: visible;
+}
+
+.upload-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: #00B18F;
+  box-shadow: 4px 4px 0.3px #03836A;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  font-family: 'Mont', sans-serif;
+}
+
+.upload-button:hover {
+  background: #00A081;
+  box-shadow: 2px 2px 0.3px #03836A;
+  transform: translate(2px, 2px);
+}
+
+.upload-controls {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.save-button {
+  padding: 10px 20px;
+  background: #00B18F;
+  box-shadow: 2px 2px 0.3px #03836A;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  font-family: 'Mont', sans-serif;
+}
+
+.save-button:hover:not(:disabled) {
+  background: #00A081;
+  box-shadow: 1px 1px 0.3px #03836A;
+  transform: translate(1px, 1px);
+}
+
+.save-button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.cancel-button {
+  padding: 10px 20px;
+  background: #EF4444;
+  box-shadow: 2px 2px 0.3px #DC2626;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  font-family: 'Mont', sans-serif;
+}
+
+.cancel-button:hover {
+  background: #DC2626;
+  box-shadow: 1px 1px 0.3px #B91C1C;
+  transform: translate(1px, 1px);
+}
+
+/* Стили для loading состояния */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 18px;
+  font-weight: 600;
+  color: #00B18F;
+  font-family: 'Mont', sans-serif;
+}
+
+.loading::after {
+  content: '';
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(0, 177, 143, 0.3);
+  border-top: 3px solid #00B18F;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-left: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Адаптивные стили */
+@media (max-width: 768px) {
+  .main-content {
+    padding-top: 100px;
+  }
+  
+  .profile-page {
+    padding: 0; /* Убираем отступы */
+  }
+  
+  .profile-form {
+    padding: 24px 20px 12px 20px; /* Уменьшаем отступы */
+    border-radius: 0;
+    max-width: 100%;
+  }
+  
+  .fields-grid {
+    grid-template-columns: 1fr;
+    gap: 20px; /* Уменьшаем gap */
+  }
+  
+  .avatar-img {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .username {
+    font-size: 20px;
+  }
+  
+  .input {
+    padding: 16px 20px;
+    font-size: 16px;
+  }
+  
+  .page-title {
+    font-size: 28px;
+  }
+  
+  .attendance-section {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(0, 177, 143, 0.15);
+  }
+  
+  /* Секция с историей монет */
+  .coin-history-section {
+    margin-top: 20px !important;
+  }
+  
+  .coin-history-btn {
+    font-size: 15px !important;
+    padding: 14px 20px !important;
+    min-height: 52px !important;
+    border-radius: 10px !important;
+    gap: 8px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-page {
+    padding: 0; /* Убираем отступы */
+  }
+  
+  .profile-form {
+    padding: 20px 16px 10px 16px; /* Уменьшаем отступы */
+    max-width: 100%;
+    border-radius: 0;
+  }
+  
+  .avatar-block {
+    margin-bottom: 24px; /* Уменьшаем */
+  }
+  
+  .avatar-img {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .username {
+    font-size: 18px;
+    margin-top: 16px;
+  }
+  
+  .fields-grid {
+    gap: 16px; /* Уменьшаем */
+  }
+  
+  .input {
+    padding: 14px 16px;
+    font-size: 15px;
+  }
+  
+  .upload-controls {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .save-button, .cancel-button {
+    width: 100%;
+    padding: 12px;
+  }
+  
+  .attendance-section {
+    margin-top: 20px; /* Уменьшаем */
+    padding-top: 16px; /* Уменьшаем */
+  }
+  
+  /* Кнопка истории монет на мобильных */
+  .coin-history-section {
+    margin-top: 16px !important;
+  }
+  
+  .coin-history-btn {
+    font-size: 14px !important;
+    padding: 12px 16px !important;
+    border-radius: 8px !important;
+    min-height: 48px !important;
+    gap: 6px !important;
+  }
+  
+  .page-title {
+    font-size: 24px;
+    margin: 16px 0;
+  }
+}
+
+/* Дополнительные стили для очень маленьких экранов */
+@media (max-width: 360px) {
+  .profile-page {
+    padding: 0; /* Убираем отступы */
+  }
+  
+  .profile-form {
+    padding: 16px 12px 8px 12px; /* Уменьшаем отступы */
+    border-radius: 0;
+  }
+  
+  .avatar-block {
+    margin-bottom: 20px; /* Уменьшаем */
+  }
+  
+  .avatar-img {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .username {
+    font-size: 16px;
+    margin-top: 12px;
+  }
+  
+  .fields-grid {
+    gap: 14px; /* Уменьшаем */
+  }
+  
+  .input {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+  
+  .field label {
+    font-size: 11px;
+    margin-bottom: 8px;
+  }
+  
+  .attendance-section {
+    margin-top: 16px; /* Уменьшаем */
+    padding-top: 14px; /* Уменьшаем */
+  }
+  
+  .coin-history-section {
+    margin-top: 12px !important;
+  }
+  
+  .coin-history-btn {
+    font-size: 13px !important;
+    padding: 10px 14px !important;
+    min-height: 44px !important;
+    gap: 5px !important;
+  }
+  
+  .page-title {
+    font-size: 20px;
+    margin: 12px 0;
+  }
+  
+  .upload-button {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+  
+  .save-button, .cancel-button {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+}
+
+/* Секция посещаемости */
+.attendance-section {
+  margin-top: 32px; /* Уменьшаем отступ */
+  padding-top: 24px; /* Уменьшаем отступ */
+  padding-bottom: 0;
+  border-top: 2px solid rgba(0, 177, 143, 0.1);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Стили для кнопки истории монет */
+.coin-history-section {
+  margin-top: 20px; /* Уменьшаем отступ */
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.coin-history-btn {
+  background: #00B18F !important;
+  box-shadow: 4px 4px 0.3px #03836A !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 16px 24px !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  width: 100% !important;
+  min-height: 56px !important;
+  font-family: 'Mont', sans-serif !important;
+  letter-spacing: 0.5px !important;
+  text-transform: none !important;
+}
+
+.coin-history-btn:hover {
+  background: #00A081 !important;
+  box-shadow: 2px 2px 0.3px #03836A !important;
+  transform: translate(2px, 2px) !important;
+}
+
+.coin-history-btn:active {
+  transform: translate(4px, 4px) !important;
+  box-shadow: 0 0 0 #03836A !important;
+}
+/* Одинаковые размеры для картинки и фолбека */
+.avatar-img,
+.avatar-fallback {
+  width: 140px;     /* подгони под свой макет */
+  height: 140px;
+  border-radius: 50%;
+  border: 3px solid #e5e5e5;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* Картинка */
+.avatar-img {
+  object-fit: cover;
+  background: #fff;
+}
+
+/* Плашка с эмодзи — показывается, когда фото нет/сломалось */
+.avatar-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64px;   /* размер эмодзи */
+  line-height: 1;
+  background: linear-gradient(135deg, #eafaf6 0%, #f5fffd 100%);
+  box-shadow: 0 8px 24px rgba(0, 177, 143, 0.15);
+}

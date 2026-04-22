@@ -1,0 +1,678 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import Sidebar      from '../components/Sidebar';
+import SmartTopBar  from '../components/SmartTopBar';
+import CourseCard   from '../components/CourseCard';
+import SuccessModal from '../components/SuccessModal';
+import { useAuth }  from '../contexts/AuthContext';
+
+import {
+  getAllCourses,
+  createCourse,
+  updateCourse,
+  deleteCourse
+} from '../services/courseService';
+
+import '../styles/ManageUserPage.css';   // старая сетка + модалки
+import '../styles/CourseGrid.css';       // сетка карточек
+import '../styles/CompactModal.css';     // компактные модальные окна
+import '../styles/MobileFixes.css';      // мобильные исправления
+import '../styles/MobileKeyboardFix.css'; // исправления клавиатуры
+
+import { useMobileKeyboard } from '../hooks/useMobileKeyboard';
+
+/*
+ * ИСПРАВЛЕНО: age_category теперь передается как массив в API
+ * - При создании курса: [form.age_category]
+ * - При обновлении курса: [edit.age_category]
+ * - При получении курса: Array.isArray проверка для отображения
+ */
+
+export default function ManageCoursesPage() {
+  const navigate = useNavigate();
+  const { user }  = useAuth();
+
+  // Хук для обработки мобильной клавиатуры
+  useMobileKeyboard();
+
+  /* ---------- state ---------- */
+  const [courses, setCourses] = useState([]);
+
+  /* поиск */
+  const [search, setSearch] = useState('');
+  const [filtered, setFiltered] = useState([]);
+  const [showSug, setShowSug] = useState(false);
+
+  /* поиск для блока "Все курсы" */
+  const [allCoursesSearch, setAllCoursesSearch] = useState('');
+  const [filteredAllCourses, setFilteredAllCourses] = useState([]);
+
+  /* создание */
+  const [form, setForm] = useState({
+    name: '',
+    description: '',
+    age_category: 'ALL'
+  });
+  const [formImage, setFormImage] = useState(null);
+  const [formPreviewUrl, setFormPreviewUrl] = useState(null);
+  const [showConfirmCreate, setShowConfirmCreate] = useState(false);
+
+  /* редактирование */
+  const [edit, setEdit] = useState(null);
+  const [editImage, setEditImage] = useState(null);
+  const [editPreviewUrl, setEditPreviewUrl] = useState(null);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const [showConfirmUpdate, setShowConfirmUpdate] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  
+  /* модальное окно успеха */
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+
+  /* ---------- effects ---------- */
+  useEffect(() => { load(); }, []);
+
+  async function load() {
+    try {
+      const all = await getAllCourses();
+      setCourses(all.objects || []);
+    } catch (e) {
+      alert('Ошибка загрузки курсов');
+    }
+  }
+
+  /* фильтрация для подсказок */
+  useEffect(() => {
+    setFiltered(
+      courses.filter(c => (c.name || '').toLowerCase().includes(search.toLowerCase()))
+    );
+  }, [search, courses]);
+
+  /* фильтрация для блока "Все курсы" */
+  useEffect(() => {
+    setFilteredAllCourses(
+      courses.filter(c => (c.name || '').toLowerCase().includes(allCoursesSearch.toLowerCase()))
+    );
+  }, [allCoursesSearch, courses]);
+
+  /* ---------- обработка файлов ---------- */
+  const handleFileSelect = (file, isEdit = false) => {
+    if (!file) return;
+
+    // Проверяем тип файла
+    if (!file.type.startsWith('image/')) {
+      alert('Пожалуйста, выберите изображение');
+      return;
+    }
+
+    // Проверяем размер файла (максимум 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Размер файла не должен превышать 5MB');
+      return;
+    }
+
+    if (isEdit) {
+      setEditImage(file);
+      // Создаем превью
+      const reader = new FileReader();
+      reader.onload = (e) => setEditPreviewUrl(e.target.result);
+      reader.readAsDataURL(file);
+    } else {
+      setFormImage(file);
+      // Создаем превью
+      const reader = new FileReader();
+      reader.onload = (e) => setFormPreviewUrl(e.target.result);
+      reader.readAsDataURL(file);
+    }
+
+    console.log('[ManageCourse] File selected:', {
+      name: file.name,
+      type: file.type,
+      size: file.size,
+      isEdit
+    });
+  };
+
+  // Функция для получения URL изображения
+  const getImageUrl = (course) => {
+    if (editPreviewUrl && edit?.id === course?.id) return editPreviewUrl;
+    
+    if (course?.photo?.url) {
+      return course.photo.url.startsWith('http') 
+        ? course.photo.url 
+        : `${window.location.protocol}//${window.location.hostname}:8080${course.photo.url}`;
+    }
+    
+    return null;
+  };
+
+  /* ---------- handlers ---------- */
+  const handleCreate = async () => {
+    if (!form.name.trim()) {
+      alert('Название курса обязательно');
+      return;
+    }
+    if (form.name.trim().length > 20) {
+      alert('Название курса не должно превышать 20 символов');
+      return;
+    }
+    setUploading(true);
+    try {
+      // Определяем имя автора из текущего пользователя
+      const authorName = [user.first_name, user.surname].filter(Boolean).join(' ') || user.username || 'Неизвестный автор';
+      
+      // ИСПРАВЛЕНО: Данные курса с полем photo (как в новостях и товарах)
+      const courseData = {
+        name:         form.name,
+        description:  form.description,
+        age_category: [form.age_category], // Передаем как массив
+        price:        0, // Всегда 0 для курсов
+        author_name:  authorName
+      };
+      
+      // Если есть изображение, добавляем поле photo с именем
+      if (formImage) {
+        courseData.photo = { name: formImage.name };
+      }
+      
+      // Простой способ создания FormData
+      const fd = new FormData();
+      
+      // Добавляем данные курса как простую строку
+      const courseDataJson = JSON.stringify(courseData);
+      console.log('[ManageCourse] Course data JSON string:', courseDataJson);
+      fd.append('course_data', courseDataJson);
+      
+      // Проверяем, что поле добавилось
+      console.log('[ManageCourse] FormData has course_data:', fd.has('course_data'));
+      console.log('[ManageCourse] FormData get course_data:', fd.get('course_data'));
+      
+      // Если есть изображение, добавляем его отдельно
+      if (formImage) {
+        fd.append('image', formImage);
+      }
+
+      console.log('[ManageCourse] Sending course data:', courseData);
+      console.log('[ManageCourse] JSON stringified course data:', JSON.stringify(courseData));
+      console.log('[ManageCourse] FormData contents:');
+      for (let [key, value] of fd.entries()) {
+        if (key === 'course_data') {
+          console.log(key, '(parsed):', JSON.parse(value));
+          console.log(key, '(raw):', value);
+          console.log(key, '(type):', typeof value);
+          console.log(key, '(length):', value.length);
+        } else {
+          console.log(key, value);
+          console.log(key, '(type):', typeof value);
+        }
+      }
+
+      await createCourse(fd);
+      setForm({ name:'', description:'', age_category:'ALL' });
+      setFormImage(null);
+      setFormPreviewUrl(null);
+      setShowConfirmCreate(false);
+      await load();
+      
+      setSuccessMessage('Новый курс успешно добавлен в систему');
+      setShowSuccessModal(true);
+    } catch (e) {
+      console.error('[ManageCourse] Error creating course:', e);
+      
+      // Подробная информация об ошибке валидации
+      if (e.response?.status === 422 && e.response?.data?.detail) {
+        console.error('[ManageCourse] Validation errors:', e.response.data.detail);
+        e.response.data.detail.forEach((detail, index) => {
+          console.error(`[ManageCourse] Validation error ${index + 1}:`, detail);
+        });
+        alert(`Ошибка валидации: ${e.response.data.detail.map(d => d.msg || d.message || JSON.stringify(d)).join(', ')}`);
+      } else {
+        alert('Ошибка создания курса');
+      }
+      
+      setShowConfirmCreate(false);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleSelect = c => {
+    // Если age_category приходит как массив, берем первый элемент
+    const ageCategory = Array.isArray(c.age_category) ? c.age_category[0] : c.age_category;
+    
+    // Маппинг старых значений на новые
+    let mappedAgeCategory = ageCategory;
+    if (ageCategory === 'All' || ageCategory === 'Все возрасты') mappedAgeCategory = 'ALL';
+    else if (ageCategory === 'SixPlus') mappedAgeCategory = '5-8';
+    else if (ageCategory === 'TwelvePlus') mappedAgeCategory = '12-15';
+    else if (!['ALL', '5-8', '9-11', '12-15'].includes(ageCategory)) {
+      mappedAgeCategory = 'ALL'; // дефолт для неизвестных значений
+    }
+    
+    setEdit({
+      id:           c.id,
+      name:         c.name || '',
+      description:  c.description || '',
+      age_category: mappedAgeCategory,
+      author_name:  c.author_name || ''  // только для отображения, не для редактирования
+    });
+    setEditImage(null);
+    setEditPreviewUrl(null);
+    setSearch('');
+    setShowSug(false); // закрываем список после выбора
+  };
+
+  const handleUpdate = async () => {
+    if (!edit.name.trim()) {
+      alert('Название курса обязательно');
+      return;
+    }
+    if (edit.name.trim().length > 20) {
+      alert('Название курса не должно превышать 20 символов');
+      return;
+    }
+    setUploading(true);
+    try {
+      const fd = new FormData();
+      
+      // ИСПРАВЛЕНО: Данные курса с полем photo (как в новостях и товарах)
+      const courseData = {
+        name:         edit.name,
+        description:  edit.description,
+        age_category: [edit.age_category], // Передаем как массив
+        price:        0 // Всегда 0 для курсов
+        // author_name исключен - не изменяем автора курса
+      };
+      
+      // Если заменяем изображение, добавляем поле photo с именем
+      if (editImage) {
+        courseData.photo = { name: editImage.name };
+      }
+      
+      // Добавляем данные курса
+      fd.append('course_data', JSON.stringify(courseData));
+      
+      // Если заменяем изображение, добавляем его отдельно
+      if (editImage) {
+        fd.append('image', editImage);
+      }
+
+      await updateCourse(edit.id, fd);
+      setEdit(null);
+      setEditImage(null);
+      setEditPreviewUrl(null);
+      setShowConfirmUpdate(false);
+      await load();
+      
+      setSuccessMessage('Курс успешно обновлен в системе');
+      setShowSuccessModal(true);
+    } catch (e) {
+      console.error('[ManageCourse] Error updating course:', e);
+      alert('Ошибка обновления курса');
+      setShowConfirmUpdate(false);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await deleteCourse(edit.id);
+      setEdit(null);
+      setShowConfirmDelete(false);
+      await load();
+      
+      setSuccessMessage('Курс успешно удален из системы');
+      setShowSuccessModal(true);
+    } catch {
+      alert('Ошибка удаления курса');
+      setShowConfirmDelete(false);
+    }
+  };
+
+  /* ---------- helpers ---------- */
+  const fullName = [user.first_name, user.surname, user.patronymic]
+                   .filter(Boolean).join(' ');
+
+  /* ---------- UI ---------- */
+  return (
+    <div className="manage-courses app-layout">
+      <Sidebar activeItem="manage-courses" userRole={user.role} />
+
+      <div className="main-content">
+        <SmartTopBar pageTitle="Управление курсами" />
+
+        {/* ---------------- CREATE COURSE ---------------- */}
+        <div className="block">
+          <h2>Создать курс</h2>
+
+          <div className="user-form form-grid">
+            <div className="field">
+              <label>Название</label>
+              <input
+                type="text"
+                value={form.name}
+                onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                placeholder="Введите название курса"
+                maxLength={20}
+              />
+              <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '4px' }}>
+                {form.name.length}/20 символов
+              </div>
+            </div>
+
+            <div className="field">
+              <label>Возрастная категория</label>
+              <select
+                value={form.age_category}
+                onChange={e => setForm(f => ({ ...f, age_category: e.target.value }))}
+                className="age-category-select"
+              >
+                <option value="ALL">ALL</option>
+                <option value="5-8">5-8</option>
+                <option value="9-11">9-11</option>
+                <option value="12-15">12-15</option>
+              </select>
+            </div>
+
+            <div className="field" style={{ gridColumn: '1 / -1' }}>
+              <label>Описание</label>
+              <textarea
+                value={form.description}
+                onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
+                placeholder="Описание курса"
+                rows={4}
+                maxLength={40}
+              />
+              <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '4px' }}>
+                {form.description.length}/40 символов
+              </div>
+            </div>
+
+            <div className="field" style={{ gridColumn: '1 / -1' }}>
+              <label>Изображение (опционально)</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={e => handleFileSelect(e.target.files[0], false)}
+              />
+              {formPreviewUrl && (
+                <div style={{ marginTop: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <img 
+                    src={formPreviewUrl} 
+                    alt="Превью" 
+                    style={{ maxWidth: '200px', maxHeight: '150px', objectFit: 'cover', borderRadius: '4px' }}
+                  />
+                  <button 
+                    type="button" 
+                    onClick={() => { setFormImage(null); setFormPreviewUrl(null); }}
+                    style={{ marginTop: '10px', padding: '5px 10px' }}
+                  >
+                    Удалить
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <div className="buttons" style={{ gridColumn:'1 / -1' }}>
+              <button 
+                className="btn-primary" 
+                onClick={() => setShowConfirmCreate(true)}
+                disabled={uploading || !form.name.trim()}
+              >
+                {uploading ? 'Создание...' : 'Создать'}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* ---------------- COURSES GRID ---------------- */}
+        {courses.length > 0 && (
+          <div className="block">
+            <h2>Все курсы</h2>
+            
+            {/* Поиск по всем курсам */}
+            <div className="search-block" style={{ marginBottom: '20px' }}>
+              <input
+                placeholder="Поиск курсов по названию..."
+                value={allCoursesSearch}
+                onChange={e => setAllCoursesSearch(e.target.value)}
+                style={{ 
+                  width: '100%',
+                  padding: '12px 16px',
+                  borderRadius: '8px',
+                  border: '2px solid rgba(0, 177, 143, 0.2)',
+                  fontSize: '14px'
+                }}
+              />
+            </div>
+
+            <div className="card-grid">
+              {(allCoursesSearch ? filteredAllCourses : courses).map(c => (
+                <CourseCard
+                  key={c.id}
+                  course={c}
+                  onOpen={id => navigate(`/courses/${id}`)}
+                />
+              ))}
+            </div>
+            
+            {allCoursesSearch && filteredAllCourses.length === 0 && (
+              <p style={{ textAlign: 'center', color: '#666', marginTop: '20px' }}>
+                Курсы не найдены по запросу "{allCoursesSearch}"
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* ---------------- SEARCH / EDIT / DELETE ---------------- */}
+        <div className="block">
+          <h2>Найти / Изменить / Удалить</h2>
+
+          {/* search bar */}
+          <div className="search-block">
+            <input
+              placeholder="Поиск по названию"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              onFocus={() => setShowSug(true)}
+            />
+            {showSug && filtered.length > 0 && (
+              <ul className="suggestions">
+                {filtered.map(c => (
+                  <li key={c.id} onClick={() => handleSelect(c)}>
+                    <span>{c.name} ({c.author_name})</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          {/* edit form */}
+          {edit && (
+            <div className="user-form form-grid" style={{ marginTop:20 }}>
+              <div className="field">
+                <label>Название</label>
+                <input
+                  type="text"
+                  value={edit.name}
+                  onChange={e => setEdit(p => ({ ...p, name: e.target.value }))}
+                  maxLength={20}
+                />
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '4px' }}>
+                  {edit.name.length}/20 символов
+                </div>
+              </div>
+
+              <div className="field">
+                <label>Возрастная категория</label>
+                <select
+                  value={edit.age_category}
+                  onChange={e => setEdit(p => ({ ...p, age_category: e.target.value }))}
+                  className="age-category-select"
+                >
+                  <option value="ALL">ALL</option>
+                  <option value="5-8">5-8</option>
+                  <option value="9-11">9-11</option>
+                  <option value="12-15">12-15</option>
+                </select>
+              </div>
+
+              <div className="field" style={{ gridColumn: '1 / -1' }}>
+                <label>Описание</label>
+                <textarea
+                  value={edit.description}
+                  onChange={e => setEdit(p => ({ ...p, description: e.target.value }))}
+                  rows={4}
+                  maxLength={40}
+                />
+                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '4px' }}>
+                  {edit.description.length}/40 символов
+                </div>
+              </div>
+
+              <div className="field" style={{ gridColumn: '1 / -1' }}>
+                <label>Изображение</label>
+                
+                {/* Текущее изображение */}
+                {getImageUrl(edit) && (
+                  <div style={{ marginBottom: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <img 
+                      src={getImageUrl(edit)} 
+                      alt="Текущее изображение" 
+                      style={{ maxWidth: '200px', maxHeight: '150px', objectFit: 'cover', borderRadius: '4px' }}
+                    />
+                    <p style={{ fontSize: '12px', color: '#666', margin: '5px 0' }}>
+                      {editPreviewUrl ? 'Новое изображение (не сохранено)' : 'Текущее изображение'}
+                    </p>
+                  </div>
+                )}
+                
+                {/* Выбор нового файла */}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={e => handleFileSelect(e.target.files[0], true)}
+                />
+                
+                {editPreviewUrl && (
+                  <div style={{ display: 'flex', justifyContent: 'center', marginTop: '5px' }}>
+                    <button 
+                      type="button" 
+                      onClick={() => { setEditImage(null); setEditPreviewUrl(null); }}
+                      style={{ padding: '5px 10px' }}
+                    >
+                      Отменить замену
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              <div className="buttons" style={{ gridColumn:'1 / -1' }}>
+                <button 
+                  className="btn-primary" 
+                  onClick={() => setShowConfirmUpdate(true)}
+                  disabled={uploading}
+                  style={{maxWidth: "140px", height:"48px", marginTop:"10px"}}
+                >
+                  {uploading ? 'Сохранение...' : 'Сохранить'}
+                </button>
+                <button className="btn-primary" style={{backgroundColor: '#e40b0bff'}} onClick={() => setShowConfirmDelete(true)}>
+                  Удалить
+                </button>
+                <button 
+                  className="btn-primary"
+            style={{ backgroundColor: '#e40b0bff'}}
+                  onClick={() => { 
+                    setEdit(null); 
+                    setEditImage(null); 
+                    setEditPreviewUrl(null); 
+                  }}
+                >
+                  Отмена
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* ---------------- MODALS ---------------- */}
+        {/* create */}
+        {showConfirmCreate && (
+          <div className="compact-modal-overlay">
+            <div className="compact-modal-content create-modal">
+              <p>
+                🎯 Создать новый курс<br />
+                <span>
+                  "{form.name}"
+                </span>
+              </p>
+              <div className="compact-modal-buttons">
+                <button className="btn-primary" onClick={handleCreate} disabled={uploading}>
+                  {uploading ? 'Создание...' : ' Создать'}
+                </button>
+                <button className="btn-primary"
+            style={{ backgroundColor: '#e40b0bff'}} onClick={() => setShowConfirmCreate(false)}>
+                  Отмена
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+        {/* update */}
+        {showConfirmUpdate && (
+          <div className="compact-modal-overlay">
+            <div className="compact-modal-content update-modal">
+              <p>
+                📝 Сохранить изменения<br />
+                <span>
+                  Курс "{edit.name}" будет обновлен
+                </span>
+              </p>
+              <div className="compact-modal-buttons">
+                <button className="btn-primary" onClick={handleUpdate} disabled={uploading}>
+                  {uploading ? 'Сохранение...' : '💾 Сохранить'}
+                </button>
+                <button className="btn-primary"
+            style={{ backgroundColor: '#e40b0bff'}} onClick={() => setShowConfirmUpdate(false)}>
+                  Отмена
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+        {/* delete */}
+        {showConfirmDelete && (
+          <div className="compact-modal-overlay">
+            <div className="compact-modal-content delete-modal">
+              <p>
+                🗑️ Удалить курс<br />
+                <span>
+                  Курс "{edit.name}" будет удален безвозвратно
+                </span>
+              </p>
+              <div className="compact-modal-buttons">
+                <button className="btn-danger" onClick={handleDelete}>
+                  🗑️ Удалить
+                </button>
+                <button className="btn-primary"
+            style={{ backgroundColor: '#e40b0bff'}} onClick={() => setShowConfirmDelete(false)}>
+                  Отмена
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+        
+        {/* Модальное окно успеха */}
+        <SuccessModal
+          isOpen={showSuccessModal}
+          onClose={() => setShowSuccessModal(false)}
+          title="Успешно!"
+          message={successMessage}
+        />
+      </div>
+    </div>
+  );
+}

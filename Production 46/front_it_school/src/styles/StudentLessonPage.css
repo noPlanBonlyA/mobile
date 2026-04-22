@@ -1,0 +1,1365 @@
+/* Стили для страницы урока */
+.student-lesson-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* Кнопка назад */
+.back-button-container {
+  margin-bottom: 20px;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #00B18F 0%, #03836A 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 177, 143, 0.3);
+}
+
+.back-button:hover {
+  background: linear-gradient(135deg, #03836A 0%, #026A56 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 177, 143, 0.4);
+}
+
+.back-button:active {
+  transform: translateY(0);
+  transition: transform 0.1s ease;
+}
+
+/* Заголовок урока */
+.lesson-title-section {
+  margin-bottom: 40px;
+  text-align: center;
+  padding: 30px 0;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  position: relative;
+  overflow: hidden;
+}
+
+.lesson-title-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #00B18F 0%, #03836A 50%, #00B18F 100%);
+}
+
+.lesson-title {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #00B18F 0%, #03836A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 4px rgba(0, 177, 143, 0.1);
+}
+
+/* Секция материалов */
+.materials-section {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  margin-bottom: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+  position: relative;
+  overflow: hidden;
+}
+
+.materials-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #00B18F 0%, #03836A 50%, #00B18F 100%);
+}
+
+.materials-header {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.materials-title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #00B18F 0%, #03836A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  display: inline-block;
+}
+
+.materials-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #00B18F 0%, #03836A 100%);
+  border-radius: 2px;
+}
+
+/* Основной контейнер материалов */
+.main-material-container {
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.main-material-container .material-name {
+  margin-right: 3%;
+  margin-bottom: 8px;
+}
+
+.material-iframe-wrapper {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 177, 143, 0.15);
+  border: 2px solid #e2e8f0;
+  transition: all 0.3s ease;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  position: relative;
+}
+
+.material-iframe-wrapper:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px rgba(0, 177, 143, 0.25);
+  border-color: #00B18F;
+}
+
+.main-material-iframe {
+  width: 100%;
+  height: 500px;
+  border: none;
+  display: block;
+  background: white;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  pointer-events: auto;
+}
+
+/* Сообщение об отсутствии материалов */
+.no-materials-message {
+  text-align: center;
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-radius: 16px;
+  border: 2px dashed #cbd5e1;
+}
+
+.no-materials-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  opacity: 0.7;
+}
+
+.no-materials-message h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.5rem;
+  color: #374151;
+  font-weight: 600;
+}
+
+.no-materials-message p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 1.1rem;
+}
+
+/* Контейнер для дополнительных материалов */
+.additional-materials-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.download-additional-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 32px;
+  background: linear-gradient(135deg, #00B18F 0%, #03836A 100%);
+  color: white;
+  text-decoration: none;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 25px rgba(0, 177, 143, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.download-additional-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.download-additional-btn:hover {
+  background: linear-gradient(135deg, #03836A 0%, #026A56 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(0, 177, 143, 0.4);
+}
+
+.download-additional-btn:hover::before {
+  opacity: 1;
+}
+
+.download-additional-btn:active {
+  transform: translateY(-1px);
+  transition: transform 0.1s ease;
+}
+
+/* Блок домашнего задания */
+.block {
+  margin-bottom: 30px;
+  padding: 20px;
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 8px 25px rgba(0, 177, 143, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.block::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #00B18F 0%, #03836A 50%, #00B18F 100%);
+}
+
+.block h2 {
+  margin: 0 0 20px 0;
+  font-size: 1.8rem;
+  background: linear-gradient(135deg, #00B18F 0%, #03836A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+}
+
+.block h3 {
+  margin: 15px 0 10px 0;
+  font-size: 1.3rem;
+  color: #374151;
+}
+
+.homework-material {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border-radius: 12px;
+  padding: 20px;
+  border: 2px solid #bbf7d0;
+  margin-bottom: 20px;
+}
+
+/* Содержимое урока */
+.lesson-content {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Секция материалов */
+.material-section {
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.material-section h2 {
+  font-size: 1.5rem;
+  margin: 0 0 24px 0;
+  color: #1f2937;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 12px;
+}
+
+.material-content {
+  margin-bottom: 20px;
+}
+
+.material-content iframe {
+  width: 100% !important;
+  min-height: 400px !important;
+  border: 1px solid #ddd !important;
+  border-radius: 4px !important;
+  background: white;
+}
+
+.material-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.material-actions a {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  text-decoration: none;
+  color: #495057;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.material-actions a:hover {
+  background: #e9ecef;
+  border-color: #adb5bd;
+}
+
+/* Стили для блоков материалов */
+.block {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+.block h2 {
+  margin: 0 0 20px 0;
+  color: #1f2937;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 12px;
+}
+
+.block a {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 10px 20px;
+  background: #3b82f6;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.block a:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* Стили для блоков материалов */
+.material-block,
+.homework-block,
+.no-materials,
+.no-homework {
+  border-left: 4px solid #3b82f6;
+}
+
+.material-block h2::before,
+.no-materials h2::before {
+  content: '📚 ';
+  margin-right: 8px;
+}
+
+.homework-block h2::before,
+.no-homework h2::before {
+  content: '📝 ';
+  margin-right: 8px;
+}
+
+.no-content-message {
+  color: #6b7280;
+  font-style: italic;
+  margin: 0;
+  padding: 20px;
+  background: #f9fafb;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.open-external-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 10px 20px;
+  background: #3b82f6;
+  color: white !important;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.open-external-link:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* ===== Секция домашнего задания - новый дизайн ===== */
+.homework-section {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  margin-bottom: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+  position: relative;
+  overflow: hidden;
+}
+
+.homework-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #00B18F 0%, #03836A 50%, #00B18F 100%);
+}
+
+.homework-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.homework-title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #00B18F 0%, #03836A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  display: inline-block;
+}
+
+.homework-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #00B18F 0%, #03836A 100%);
+  border-radius: 2px;
+}
+
+/* Контейнер материалов домашнего задания */
+.homework-material-container {
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.homework-main-content {
+  margin-bottom: 20px;
+}
+
+.homework-iframe-wrapper {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 177, 143, 0.15);
+  border: 2px solid #e2e8f0;
+  transition: all 0.3s ease;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  position: relative;
+}
+
+.homework-iframe-wrapper:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px rgba(0, 177, 143, 0.25);
+  border-color: #00B18F;
+}
+
+.homework-material-iframe {
+  width: 100%;
+  height: 500px;
+  border: none;
+  display: block;
+  background: white;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  pointer-events: auto;
+}
+
+/* Сообщение об отсутствии домашнего задания */
+.no-homework-message {
+  text-align: center;
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border-radius: 16px;
+  border: 2px dashed #00B18F;
+}
+
+.no-homework-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  opacity: 0.7;
+}
+
+.no-homework-message h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.5rem;
+  color: #c2410c;
+  font-weight: 600;
+}
+
+.no-homework-message p {
+  margin: 0;
+  color: #ea580c;
+  font-size: 1.1rem;
+}
+
+/* Контейнер для дополнительных материалов домашнего задания */
+.homework-additional-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.download-homework-additional-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 32px;
+  background: linear-gradient(135deg, #ffc107 0%, #ff9500 100%);
+  color: white;
+  text-decoration: none;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 25px rgba(255, 193, 7, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.download-homework-additional-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.download-homework-additional-btn:hover {
+  background: linear-gradient(135deg, #ff9500 0%, #ff8c00 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(255, 193, 7, 0.4);
+}
+
+.download-homework-additional-btn:hover::before {
+  opacity: 1;
+}
+
+.download-homework-additional-btn:active {
+  transform: translateY(-1px);
+  transition: transform 0.1s ease;
+}
+
+/* Overlay для защиты от копирования в iframe */
+.iframe-protection-overlay {
+  position: absolute;
+  background: transparent;
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.iframe-protection-overlay::selection {
+  background: transparent;
+}
+
+.iframe-protection-overlay::-moz-selection {
+  background: transparent;
+}
+
+/* Раздел сдачи домашнего задания */
+.homework-submission-section {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border-radius: 16px;
+  padding: 30px;
+  border: 1px solid #00B18F;
+  margin-top: 30px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.submission-title {
+  margin: 0 0 25px 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #03836A;
+  text-align: center;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.submission-title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #00B18F 0%, #03836A 100%);
+  border-radius: 2px;
+  margin: 10px auto 0;
+}
+
+/* Статус сдачи */
+.hw-submitted {
+  text-align: center;
+  padding: 40px;
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  border-radius: 12px;
+  border: 2px solid #00B18F;
+}
+
+.submitted-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+}
+
+.hw-submitted h3 {
+  margin: 0 0 12px 0;
+  color: #03836A;
+  font-size: 1.5rem;
+}
+
+.hw-submitted p {
+  color: #15803d;
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+/* Форма загрузки */
+.hw-form {
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.hw-form > p {
+  font-size: 1.1rem;
+  color: #374151;
+  margin-bottom: 24px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.submission-options {
+  margin: 24px auto;
+  max-width: 500px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.submission-option h3 {
+  margin: 0 0 16px 0;
+  font-size: 1.2rem;
+  color: #03836A;
+  text-align: center;
+  font-weight: 600;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.file-upload {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.file-upload input[type="file"] {
+  position: absolute;
+  left: -9999px;
+}
+
+.file-upload label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 60px;
+  padding: 16px;
+  background: #f8fafc;
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+  color: #475569;
+  font-weight: 500;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  text-align: center;
+}
+
+.file-upload label:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.file-upload label.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Фирменные стили кнопок наследуются из ManageUserPage.css */
+.btn-primary {
+  background: linear-gradient(135deg, #00b18f 0%, #00a082 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 177, 143, 0.3);
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 177, 143, 0.4);
+}
+
+.btn-primary:hover::before {
+  opacity: 1;
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  transition: transform 0.1s ease;
+}
+
+.btn-primary:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-primary:disabled::before {
+  display: none;
+}
+
+.btn-secondary {
+  width: 100%;
+  background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(108, 117, 125, 0.3);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+}
+
+.btn-secondary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.4);
+}
+
+.btn-secondary:hover::before {
+  opacity: 1;
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
+  transition: transform 0.1s ease;
+}
+
+.btn-secondary:disabled {
+  background: #dee2e6;
+  color: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-secondary:disabled::before {
+  display: none;
+}
+
+/* Нет домашнего задания */
+.no-homework {
+  text-align: center;
+  padding: 40px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* Загрузка и ошибки */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3b82f6;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-container {
+  text-align: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.error-container h2 {
+  color: #dc2626;
+  margin-bottom: 16px;
+}
+
+.error-container p {
+  color: #6b7280;
+  margin-bottom: 24px;
+}
+
+/* Стили для пустого состояния */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  color: #6b7280;
+}
+
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+  opacity: 0.7;
+}
+
+.empty-state p {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.empty-subtitle {
+  font-size: 14px !important;
+  color: #9ca3af !important;
+  font-weight: 400 !important;
+}
+
+/* Debug панель (только для разработки) */
+.debug-panel {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+  font-size: 12px;
+}
+
+.debug-panel summary {
+  cursor: pointer;
+  font-weight: bold;
+  margin-bottom: 12px;
+  color: #856404;
+}
+
+.debug-panel pre {
+  background: #f8f9fa;
+  padding: 12px;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin: 8px 0;
+  white-space: pre-wrap;
+}
+
+.debug-panel p {
+  margin: 8px 0;
+  padding: 4px 8px;
+  background: #f8f9fa;
+  border-left: 3px solid #6c757d;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .student-lesson-page {
+    padding: 12px;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  
+  .lesson-title-section {
+    padding: 20px 15px;
+    margin-bottom: 20px;
+  }
+  
+  .lesson-title {
+    font-size: 1.5rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+  
+  .materials-title,
+  .homework-title {
+    font-size: 1.3rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  .materials-section,
+  .homework-section {
+    padding: 15px;
+    margin-bottom: 20px;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  
+  .main-material-container,
+  .homework-material-container {
+    max-width: 100%;
+    overflow: hidden;
+  }
+  
+  .material-iframe-wrapper,
+  .homework-iframe-wrapper {
+    max-width: 100%;
+    overflow: hidden;
+  }
+  
+  .main-material-iframe,
+  .homework-material-iframe {
+    height: 300px;
+    max-width: 100%;
+  }
+  
+  .download-additional-btn,
+  .download-homework-additional-btn {
+    padding: 12px 20px;
+    font-size: 14px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    justify-content: center;
+  }
+  
+  .back-button {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+  
+  .homework-submission-section {
+    padding: 15px;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  
+  .submission-title {
+    font-size: 1.2rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  .hw-form {
+    max-width: 100%;
+    padding: 0;
+  }
+  
+  .submission-options {
+    max-width: 100%;
+    margin: 15px 0;
+  }
+  
+  .file-upload label {
+    font-size: 14px;
+    padding: 12px;
+    min-height: 50px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  /* Стили для комментария на мобильных */
+  .student-comment-section {
+    padding: 15px;
+    margin: 0 0 15px 0;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .student-comment-section h3 {
+    font-size: 16px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  .student-comment-section textarea {
+    font-size: 14px;
+    padding: 10px;
+    min-height: 70px;
+    max-height: 150px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .student-comment-section .comment-preview {
+    font-size: 12px;
+    padding: 8px;
+    max-height: 100px;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+  
+  .btn-primary,
+  .btn-secondary {
+    font-size: 14px;
+    padding: 12px 20px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .hw-submitted {
+    padding: 20px 15px;
+  }
+  
+  .hw-submitted h3 {
+    font-size: 1.2rem;
+    word-wrap: break-word;
+  }
+  
+  .hw-submitted p {
+    font-size: 1rem;
+  }
+  
+  .material-name {
+    font-size: 18px !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    padding: 0 10px;
+  }
+  
+  .additional-materials-container,
+  .homework-additional-container {
+    padding: 15px 10px;
+    max-width: 100%;
+  }
+  
+  .no-materials-message,
+  .no-homework-message {
+    padding: 40px 15px;
+  }
+  
+  .no-materials-message h3,
+  .no-homework-message h3 {
+    font-size: 1.2rem;
+    word-wrap: break-word;
+  }
+  
+  .no-materials-message p,
+  .no-homework-message p {
+    font-size: 1rem;
+  }
+}
+
+/* Дополнительные правила для очень маленьких экранов */
+@media (max-width: 480px) {
+  .student-lesson-page {
+    padding: 10px;
+  }
+  
+  .lesson-title {
+    font-size: 1.3rem;
+  }
+  
+  .materials-title,
+  .homework-title {
+    font-size: 1.1rem;
+  }
+  
+  .materials-section,
+  .homework-section {
+    padding: 12px;
+    border-radius: 12px;
+  }
+  
+  .main-material-iframe,
+  .homework-material-iframe {
+    height: 250px;
+  }
+  
+  .download-additional-btn,
+  .download-homework-additional-btn {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+  
+  .homework-submission-section {
+    padding: 12px;
+  }
+  
+  .submission-title {
+    font-size: 1.1rem;
+  }
+  
+  .student-comment-section {
+    padding: 12px;
+  }
+  
+  .student-comment-section h3 {
+    font-size: 14px;
+  }
+  
+  .student-comment-section textarea {
+    font-size: 13px;
+    padding: 8px;
+  }
+  
+  .btn-primary,
+  .btn-secondary {
+    font-size: 13px;
+    padding: 10px 16px;
+  }
+  
+  .material-name {
+    font-size: 16px !important;
+  }
+}
+
+/* Стили для улучшенного интерфейса домашнего задания */
+.homework-grade-info {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 15px;
+  border-left: 4px solid #28a745;
+}
+
+.homework-grade-info p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.resubmit-section {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px dashed #dee2e6;
+  text-align: center;
+}
+
+.hw-submitted {
+  text-align: center;
+  padding: 30px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px solid #e9ecef;
+}
+
+.submitted-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.hw-submitted h3 {
+  color: #28a745;
+  margin-bottom: 10px;
+}
+
+/* ===== Стили для поля комментария студента ===== */
+.student-comment-section {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border: 1px solid #00B18F;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.student-comment-section h3 {
+  margin: 0 0 16px 0;
+  color: #03836A;
+  font-size: 18px;
+  font-weight: 600;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.student-comment-section textarea {
+  width: 100%;
+  min-height: 80px;
+  max-height: 200px;
+  height: 80px;
+  padding: 12px;
+  border: 2px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  box-sizing: border-box;
+  overflow-y: auto;
+  line-height: 1.5;
+  max-width: 100%;
+}
+
+.student-comment-section textarea:focus {
+  outline: none;
+  border-color: #00B18F;
+  box-shadow: 0 0 0 0.2rem rgba(0, 177, 143, 0.25);
+}
+
+.student-comment-section textarea:disabled {
+  background-color: #e9ecef;
+  opacity: 1;
+}
+
+/* Предпросмотр комментария */
+.student-comment-section .comment-preview {
+  margin-top: 10px;
+  padding: 10px;
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  font-size: 13px;
+  max-height: 120px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  word-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.student-comment-section .comment-preview strong {
+  color: #495057;
+  margin-bottom: 5px;
+  display: block;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}

@@ -1,0 +1,1718 @@
+/* ---------- Специфические стили для главной страницы ---------- */
+
+/* Глобальный белый фон для всех элементов */
+body, html, #root, .app-layout, .main-content {
+  background: #FFFFFF !important;
+  background-color: #FFFFFF !important;
+}
+
+/* Убираем возможный внешний отступ у Topbar, чтобы он прилегал к верху */
+.topbar {
+  margin: 0;
+  padding: 0;
+}
+
+/* Основная область на главной странице */
+.main-content {
+  padding-top: 20px !important; /* Минимальный отступ от TopBar */
+  background: #FFFFFF !important;
+  opacity: 1 !important;
+  min-height: 100vh; /* Минимальная высота на весь экран */
+  overscroll-behavior: contain; /* Предотвращаем показ серого фона при overscroll */
+}
+
+/* Адаптивность для мобильных устройств - убираем отступ сайдбара */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0 !important;
+  }
+}
+
+/* Сетка карточек - новая структура с широкими новостями */
+.cards {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* Левая колонка меньше, правая (новости) шире */
+  grid-template-rows: auto auto; /* Автоматические строки */
+  gap: 24px;
+  padding: 24px !important;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  margin-top: -10px !important;
+}
+
+/* Расписание - первая карточка в левой колонке (теперь выше) */
+.card.schedule {
+  grid-column: 1; /* Левая колонка */
+  grid-row: 1; /* Первая строка */
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  min-height: 500px; /* Значительно увеличили минимальную высоту */
+  max-height: none; /* Убираем ограничение высоты - пусть расписание растягивается по содержимому */
+}
+
+/* Контейнер расписания с прокруткой для десктопа */
+.card.schedule .schedule-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto; /* Включаем скролл для всего контейнера */
+  max-height: 650px; /* Ограничиваем высоту для появления скролла */
+}
+
+.card.schedule .schedule-container > div:not(.schedule-list) {
+  flex: 1;
+  padding-right: 12px; /* Увеличиваем отступ для скроллбара */
+}
+
+/* Красивый скроллбар для расписания на десктопе */
+.card.schedule .schedule-container > div:not(.schedule-list)::-webkit-scrollbar {
+  width: 12px; /* Увеличиваем ширину скроллбара */
+}
+
+.card.schedule .schedule-container > div:not(.schedule-list)::-webkit-scrollbar-track {
+  background: rgba(0, 177, 143, 0.1);
+  border-radius: 10px;
+  margin: 4px 0;
+}
+
+.card.schedule .schedule-container > div:not(.schedule-list)::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, rgba(0, 177, 143, 0.4) 0%, rgba(3, 131, 106, 0.6) 100%);
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.card.schedule .schedule-container > div:not(.schedule-list)::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, rgba(0, 177, 143, 0.6) 0%, rgba(3, 131, 106, 0.8) 100%);
+}
+
+/* Прямые стили для schedule-container с высоким приоритетом */
+.card.schedule .schedule-container {
+  min-height: 450px !important; /* Принудительно устанавливаем минимальную высоту */
+  max-height: 650px !important; /* Принудительно устанавливаем максимальную высоту */
+}
+
+/* Новости - занимают всю правую колонку (теперь шире) */
+.card.news {
+  grid-column: 2; /* Правая колонка (широкая) */
+  grid-row: 1 / span 2; /* Занимает обе строки - во всю высоту */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  max-height: calc(100vh - 120px);
+  min-height: 400px; /* Минимальная высота для скролла */
+}
+
+/* Айтишки - вторая карточка в левой колонке (более компактная) */
+.card.coins {
+  grid-column: 1; /* Левая колонка */
+  grid-row: 2; /* Вторая строка */
+  flex-shrink: 0;
+  min-height: auto; /* Убираем фиксированную высоту */
+  height: auto; /* Автоматическая высота */
+  max-height: 160px; /* Уменьшили максимальную высоту для большего пространства расписанию */
+  padding: 12px 16px; /* Уменьшили отступы еще больше */
+}
+
+/* Общие стили для всех карточек */
+.card {
+  background: #FFFFFF;
+  border-radius: 20px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    0 2px 16px rgba(0, 177, 143, 0.12);
+  padding: 24px;
+  border: 2px solid rgba(0, 177, 143, 0.15);
+  position: relative;
+  z-index: 1;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 
+    0 16px 48px rgba(0, 0, 0, 0.12),
+    0 4px 24px rgba(0, 177, 143, 0.2);
+  border-color: rgba(0, 177, 143, 0.25);
+}
+
+/* Стили для кликабельных карточек */
+.clickable-card {
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.clickable-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0, 177, 143, 0.05) 0%, rgba(3, 131, 106, 0.1) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.clickable-card:hover::before {
+  opacity: 1;
+}
+
+.clickable-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 12px 40px rgba(0, 177, 143, 0.2);
+  border-color: rgba(0, 177, 143, 0.3);
+}
+
+.clickable-card:active {
+  transform: translateY(-2px) scale(0.99);
+  transition: transform 0.1s ease;
+}
+
+/* Убеждаемся, что контент карточки остается поверх overlay */
+.clickable-card > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Иконки навигации в заголовках карточек */
+.card-nav-icon {
+  float: right;
+  font-size: 16px;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+  margin-left: 8px;
+}
+
+.clickable-card:hover .card-nav-icon {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Анимация для кликабельных карточек */
+@keyframes clickableCardPulse {
+  0% {
+    box-shadow: 0 4px 20px rgba(0, 177, 143, 0.1);
+  }
+  50% {
+    box-shadow: 0 6px 25px rgba(0, 177, 143, 0.15);
+  }
+  100% {
+    box-shadow: 0 4px 20px rgba(0, 177, 143, 0.1);
+  }
+}
+
+.clickable-card {
+  animation: clickableCardPulse 3s ease-in-out infinite;
+}
+
+.clickable-card:hover {
+  animation: none; /* Останавливаем анимацию при hover */
+}
+
+.card h3 {
+  margin-top: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1A1A1A;
+  margin-bottom: 16px;
+  font-family: 'Mont', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Карточка расписания */
+.card.schedule h3 {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+/* Карточка новостей */
+.card.news {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Контейнер для новостей с прокруткой */
+.card.news > h3 {
+  flex-shrink: 0; /* Заголовок не сжимается */
+  margin-bottom: 16px;
+}
+
+/* Контейнер для списка новостей */
+.news-list {
+  flex: 1;
+  overflow: hidden;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: calc(100vh - 200px);
+}
+
+/* Скроллинг контейнер для новостей - теперь с CSS columns */
+.news-scroll-container {
+  overflow-y: auto;
+  padding-right: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 177, 143, 0.3) rgba(0, 177, 143, 0.1);
+  column-count: 2; /* Два столбца */
+  column-gap: 12px; /* Отступ между столбцами */
+  column-fill: balance; /* Равномерное заполнение столбцов */
+}
+
+/* Убираем колонки когда показывается сообщение о пустом списке */
+.news-scroll-container:has(.empty-text) {
+  column-count: 1; /* Один столбец для пустого состояния */
+}
+
+/* Fallback для браузеров без поддержки :has() */
+.news-scroll-container .empty-text {
+  column-span: all; /* Текст занимает всю ширину */
+  break-inside: avoid; /* Не разрывать текст между столбцами */
+}
+
+/* Красивый скроллбар для новостей */
+.news-scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.news-scroll-container::-webkit-scrollbar-track {
+  background: rgba(0, 177, 143, 0.1);
+  border-radius: 12px;
+  margin: 4px 0;
+}
+
+.news-scroll-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, rgba(0, 177, 143, 0.4) 0%, rgba(3, 131, 106, 0.6) 100%);
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.news-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, rgba(0, 177, 143, 0.6) 0%, rgba(3, 131, 106, 0.8) 100%);
+  transform: scale(1.1);
+}
+
+/* Красивый скроллбар для виджета события */
+.event-details::-webkit-scrollbar {
+  width: 8px;
+}
+
+.event-details::-webkit-scrollbar-track {
+  background: rgba(0, 177, 143, 0.1);
+  border-radius: 10px;
+}
+
+.event-details::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #00B18F 0%, #03836A 100%);
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.event-details::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #00A081 0%, #03836A 100%);
+}
+
+/* Стили для заголовка монет */
+.bestcoins-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.coins-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.coins-loading {
+  font-size: 12px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.coins-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.coins-source, .coins-updated {
+  font-size: 10px;
+  color: #9ca3af;
+}
+
+/* Стили для новостей в правой колонке - адаптированы для CSS columns */
+.news-row {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(145deg, #ffffff 0%, #fafbfc 100%);
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: 12px; /* Возвращаем margin-bottom для CSS columns */
+  border: 2px solid rgba(0, 177, 143, 0.12);
+  box-shadow: 
+    0 6px 24px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 177, 143, 0.1);
+  position: relative;
+  overflow: hidden;
+  width: 100%; /* Занимает всю ширину столбца */
+  break-inside: avoid; /* Предотвращаем разрыв новости между столбцами */
+  page-break-inside: avoid; /* Для совместимости */
+}
+
+.news-row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0, 177, 143, 0.02) 0%, rgba(3, 131, 106, 0.05) 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 1;
+}
+
+.news-row:hover {
+  box-shadow: 
+    0 16px 48px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 177, 143, 0.2);
+  border-color: rgba(0, 177, 143, 0.25);
+}
+
+.news-row:hover::before {
+  opacity: 1;
+}
+
+.news-row.pinned {
+  border: 3px solid #ffc107;
+  box-shadow: 
+    0 8px 32px rgba(255, 193, 7, 0.25),
+    0 2px 8px rgba(255, 193, 7, 0.15);
+  background: linear-gradient(145deg, #fffef7 0%, #fefce8 100%);
+}
+
+.news-row.pinned::after {
+  content: '📌';
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 16px;
+  z-index: 3;
+  filter: drop-shadow(0 2px 4px rgba(255, 193, 7, 0.3));
+}
+
+.news-row.pinned:hover {
+  box-shadow: 
+    0 16px 48px rgba(255, 193, 7, 0.3),
+    0 4px 16px rgba(255, 193, 7, 0.2);
+  border-color: rgba(255, 193, 7, 0.5);
+}
+
+.news-thumb {
+  width: 100%;
+  height: 100px; /* Уменьшили высоту для компактности */
+  object-fit: cover;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.news-content {
+  padding: 12px; /* Уменьшили отступы внутри карточек */
+  position: relative;
+  z-index: 2;
+  background: inherit;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.news-title {
+  font-size: 14px; /* Еще больше уменьшили размер шрифта */
+  font-weight: 700;
+  color: #1f2937;
+  line-height: 1.3;
+  margin-bottom: 6px; /* Уменьшили отступ */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  font-family: 'Mont', sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.news-date {
+  font-size: 11px; /* Уменьшили размер шрифта */
+  color: #6b7280;
+  margin-bottom: 6px; /* Уменьшили отступ */
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.news-date::before {
+  content: '📅';
+  font-size: 12px;
+}
+
+.news-description {
+  font-size: 15px;
+  color: #4b5563;
+  line-height: 1.6;
+  display: none; /* Скрываем описание в превью - показываем только в модальном окне */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  white-space: pre-wrap;
+  padding: 0 16px;
+  margin: 0 -16px;
+  background: linear-gradient(135deg, rgba(0, 177, 143, 0.03) 0%, rgba(3, 131, 106, 0.05) 100%);
+  border-radius: 12px;
+  position: relative;
+}
+
+.news-description::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, #00B18F 0%, #03836A 100%);
+  border-radius: 0 2px 2px 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.news-expand-btn {
+  font-size: 11px; /* Уменьшили размер шрифта */
+  color: #00B18F;
+  font-weight: 700;
+  text-align: center;
+  padding: 8px 0; /* Уменьшили отступы */
+  margin-top: auto;
+  background: linear-gradient(135deg, rgba(0, 177, 143, 0.05) 0%, rgba(3, 131, 106, 0.1) 100%);
+  border-top: 1px solid rgba(0, 177, 143, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px; /* Уменьшили отступ между иконкой и текстом */
+  font-family: 'Mont', sans-serif;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.news-expand-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0, 177, 143, 0.1) 0%, rgba(3, 131, 106, 0.15) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.news-expand-btn:hover {
+  background: linear-gradient(135deg, rgba(0, 177, 143, 0.1) 0%, rgba(3, 131, 106, 0.15) 100%);
+  color: #03836A;
+}
+
+.news-expand-btn:hover::before {
+  opacity: 1;
+}
+
+/* Стили для новостей без изображений */
+.news-row.no-image {
+  min-height: 120px;
+}
+
+.news-row.no-image .news-content {
+  padding: 24px 20px;
+}
+
+.news-row.no-image .news-title {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.news-row.no-image::before {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);
+}
+
+/* Анимация загрузки для новостей - DISABLED */
+
+.empty-text {
+  color: #9ca3af;
+  font-style: italic;
+  text-align: center;
+  padding: 40px 0;
+  column-span: all; /* Текст занимает всю ширину */
+  break-inside: avoid; /* Не разрывать текст между столбцами */
+  white-space: nowrap; /* Предотвращаем перенос строк */
+  width: 100%; /* Занимаем всю ширину */
+  display: block; /* Блочный элемент */
+}
+
+/* Стили для выпадашки уведомлений, если понадобится */
+.notif-dropdown {
+  position: absolute;
+  top: 70px; /* сразу под Topbar (Topbar = 70px) */
+  right: 40px;
+  width: 260px;
+  background: #FFFFFF;
+  border: 1px solid #4880FF;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  z-index: 10;
+}
+
+.notif-dropdown h4 {
+  margin: 0 0 12px;
+  font-size: 16px;
+}
+
+.notif-dropdown ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.notif-dropdown li {
+  margin-bottom: 12px;
+}
+
+.notif-dropdown .time {
+  font-size: 12px;
+  color: #919191;
+}
+
+/* Мини-виджет события с красивыми границами */
+.event-details {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #FFFFFF;
+  border-radius: 20px;
+  box-shadow: 
+    0 16px 48px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 177, 143, 0.2);
+  padding: 24px;
+  overflow-y: auto;
+  z-index: 10;
+  border: 2px solid rgba(0, 177, 143, 0.2);
+}
+
+@keyframes slideInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Убираем серый фон - теперь виджет не закрывает весь экран */
+.event-details::before {
+  display: none;
+}
+
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0, 177, 143, 0.1);
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #00B18F;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  border: 2px solid rgba(0, 177, 143, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 177, 143, 0.15);
+}
+
+.close-btn:hover {
+  background: rgba(0, 177, 143, 0.2);
+  color: #03836A;
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 177, 143, 0.25);
+}
+
+.event-header {
+  margin-bottom: 20px;
+  padding-right: 35px;
+  position: relative;
+}
+
+
+
+.event-header h2 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  color: #1A1A1A;
+  line-height: 1.3;
+  font-weight: 700;
+  font-family: 'Mont', sans-serif;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 25px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(0, 177, 143, 0.1);
+  border: 1px solid rgba(0, 177, 143, 0.2);
+  font-family: 'Mont', sans-serif;
+}
+
+.status-badge.opened {
+  background: linear-gradient(135deg, #E8F8F5 0%, #D1F2EB 100%);
+  color: #00B18F;
+  border-color: rgba(0, 177, 143, 0.2);
+}
+
+.status-badge.closed {
+  background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
+  color: #DC2626;
+  border-color: rgba(220, 38, 38, 0.2);
+}
+
+.event-info {
+  margin-bottom: 20px;
+  background: rgba(0, 177, 143, 0.05);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid rgba(0, 177, 143, 0.1);
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.info-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.info-item strong {
+  flex-shrink: 0;
+  font-weight: 600;
+  color: #374151;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.info-item strong::before {
+  content: '•';
+  color: #3b82f6;
+  font-size: 14px;
+}
+
+.info-item span {
+  flex: 1;
+  text-align: right;
+  color: #6b7280;
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.event-description {
+  margin-bottom: 20px;
+  padding: 16px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);
+  border-radius: 12px;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.event-description::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, #3b82f6 0%, #8b5cf6 100%);
+  border-radius: 0 2px 2px 0;
+}
+
+.event-description strong {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 700;
+  color: #1f2937;
+  font-size: 14px;
+}
+
+.event-description p {
+  margin: 0;
+  color: #4b5563;
+  line-height: 1.5;
+  font-size: 13px;
+}
+
+.event-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.btn-primary {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 24px;
+  gap: 10px;
+  
+  background: #00B18F;
+  box-shadow: 4px 4px 0.3px #03836A;
+  border-radius: 10px;
+  border: none;
+  
+  font-family: 'Mont', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  color: #FFFFFF;
+  
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary:hover {
+  background: #00A081;
+  box-shadow: 2px 2px 0.3px #03836A;
+  transform: translate(2px, 2px);
+}
+
+.btn-primary:active {
+  background: #009273;
+  box-shadow: 1px 1px 0.3px #03836A;
+  transform: translate(3px, 3px);
+}
+
+/* Стили для тестовых кнопок отладки */
+.debug-buttons {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 1000;
+}
+
+.debug-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 12px;
+  
+  background: #00B18F;
+  box-shadow: 2px 2px 0.3px #03836A;
+  border-radius: 8px;
+  border: none;
+  
+  font-family: 'Mont', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  color: #FFFFFF;
+  
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+}
+
+.debug-btn:hover {
+  background: #00A081;
+  box-shadow: 1px 1px 0.3px #03836A;
+  transform: translate(1px, 1px);
+}
+
+.debug-btn:active {
+  background: #009273;
+  box-shadow: 0px 0px 0.3px #03836A;
+  transform: translate(2px, 2px);
+}
+
+.debug-btn.primary { background: #00B18F; }
+.debug-btn.success { background: #28a745; box-shadow: 2px 2px 0.3px #1e7e34; }
+.debug-btn.info { background: #007bff; box-shadow: 2px 2px 0.3px #0056b3; }
+.debug-btn.warning { background: #ffc107; color: #000; box-shadow: 2px 2px 0.3px #d39e00; }
+.debug-btn.purple { background: #6f42c1; box-shadow: 2px 2px 0.3px #59359a; }
+
+.debug-btn.success:hover { background: #218838; }
+.debug-btn.info:hover { background: #0069d9; }
+.debug-btn.warning:hover { background: #e0a800; }
+.debug-btn.purple:hover { background: #5a32a3; }
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+  /* Убираем любой серый фон на мобильных */
+  body, html, #root {
+    background: #FFFFFF !important;
+    background-color: #FFFFFF !important;
+    overscroll-behavior: auto; /* Не блокируем естественный скролл */
+    -webkit-overscroll-behavior: auto; /* Для Safari */
+  }
+  
+  /* Улучшаем сенсорный скролл для всех scrollable элементов */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .app-layout {
+    flex-direction: row !important; /* Возвращаем row для мобильных */
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden; /* Скрываем горизонтальный скролл */
+    background: #FFFFFF !important; /* Обеспечиваем белый фон */
+    overscroll-behavior: contain; /* Предотвращаем показ серого фона */
+    -webkit-overscroll-behavior: contain; /* Для Safari */
+  }
+  
+  .main-content {
+    padding-top: 20px !important; /* Минимальный отступ сверху */
+    margin-left: 0 !important; /* Без отступа слева */
+    width: 100% !important; /* Полная ширина */
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    min-height: 100vh;
+    background: #FFFFFF !important; /* Белый фон */
+    /* Контент всегда занимает всю ширину экрана */
+    box-sizing: border-box;
+    flex: 1; /* Занимает всю доступную ширину */
+    overflow-y: auto; /* Разрешаем вертикальный скролл */
+    height: 100vh; /* Ограничиваем высоту для скролла */
+  }
+  
+  .cards {
+    grid-template-columns: 1fr; /* Одна колонка на мобильных */
+    gap: 16px;
+    padding: 16px !important;
+    margin-top: 0px !important;
+    background: #FFFFFF !important; /* Белый фон для контейнера карточек */
+    /* Разрешаем натуральную высоту карточек */
+    grid-auto-rows: auto;
+    /* Убираем ограничения по высоте */
+    max-height: none;
+    overflow: visible;
+  }
+  
+  /* Убираем debug кнопки на мобильных */
+  .debug-buttons {
+    display: none;
+  }
+  
+  /* Скрываем дополнительную информацию о монетах на мобильных */
+  .desktop-only {
+    display: none !important;
+  }
+  
+  .news-list {
+    /* Убираем ограничения высоты на мобильных */
+    max-height: none;
+    overflow: visible;
+  }
+  
+  .news-scroll-container {
+    /* Убираем скролл, позволяем натуральную высоту */
+    overflow: visible;
+    max-height: none;
+    height: auto;
+    /* ИСПРАВЛЕНО: В мобильной версии новости в один столбик */
+    column-count: 1; /* Одна колонка на мобильных */
+    column-gap: 0;
+    grid-template-columns: none; /* Убираем grid на мобильных */
+  }
+  
+  /* Новый порядок карточек на мобильных */
+  .card.schedule {
+    grid-column: 1;
+    grid-row: 1; /* Расписание первое */
+    order: 1;
+    /* Увеличили размеры для мобильных */
+    min-height: 400px; /* Увеличили минимальную высоту */
+    max-height: none; /* Убираем ограничение - пусть расписание занимает столько места, сколько нужно */
+    overflow: visible; /* Разрешаем содержимому быть видимым */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Улучшенные стили расписания для мобильных */
+  .card.schedule .schedule-container {
+    padding: 12px; /* Увеличили отступы */
+    gap: 8px; /* Отступы между элементами */
+    display: flex;
+    flex-direction: column;
+    height: auto; /* Автоматическая высота */
+    flex: 1;
+    overflow: visible; /* Убираем ограничение скролла */
+  }
+  
+  .card.schedule .schedule-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Отступ между элементами расписания */
+    flex: 1;
+    overflow: visible; /* Убираем скролл - пусть все элементы видны */
+    padding-right: 0; /* Убираем отступ для скроллбара */
+    max-height: none; /* Убираем ограничение высоты */
+  }
+  
+  .card.schedule .schedule-list li {
+    display: flex;
+    flex-direction: column;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.8) 100%);
+    border: 1px solid rgba(0, 177, 143, 0.15);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 177, 143, 0.08);
+    transition: all 0.3s ease;
+    gap: 8px;
+    cursor: pointer;
+  }
+  
+  .card.schedule .schedule-list li:hover {
+    background: linear-gradient(135deg, rgba(0, 177, 143, 0.08) 0%, rgba(232, 248, 245, 0.9) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 177, 143, 0.15);
+    border-color: rgba(0, 177, 143, 0.3);
+  }
+  
+  /* Верхняя строка с временем и статусом */
+  .card.schedule .schedule-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+  
+  .card.schedule .schedule-list .time {
+    background: rgba(0, 177, 143, 0.1);
+    color: #00B18F;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    border: 1px solid rgba(0, 177, 143, 0.2);
+    min-width: auto;
+  }
+  
+  .card.schedule .schedule-status {
+    background: #e8f5e8;
+    color: #2d5a2d;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  /* Основная информация о занятии */
+  .card.schedule .schedule-main-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .card.schedule .schedule-list .title {
+    font-size: 16px; /* Увеличили размер шрифта для лучшей читаемости */
+    font-weight: 700;
+    color: #1f2937;
+    line-height: 1.4; /* Нормальный межстрочный интервал */
+    margin: 0;
+    word-wrap: normal; /* Убираем принудительный перенос слов */
+    overflow-wrap: normal; /* Убираем принудительный перенос */
+    hyphens: none; /* Отключаем автоматические переносы */
+    white-space: normal; /* Разрешаем перенос строк только по пробелам */
+    text-align: left; /* Выравнивание по левому краю */
+    width: 100%; /* Используем всю доступную ширину */
+  }
+  
+  .card.schedule .schedule-course-info {
+    display: flex;
+    color: #00B18F;
+    font-size: 14px; /* Увеличили размер шрифта */
+    font-weight: 600;
+    word-wrap: normal; /* Убираем принудительный перенос слов */
+    overflow-wrap: normal; /* Убираем принудительный перенос */
+    hyphens: none; /* Отключаем автоматические переносы */
+    line-height: 1.3; /* Нормальный межстрочный интервал */
+    white-space: normal; /* Разрешаем перенос строк только по пробелам */
+    width: 100%; /* Используем всю доступную ширину */
+  }
+  
+  /* Дополнительная информация */
+  .card.schedule .schedule-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 4px;
+  }
+  
+  .card.schedule .schedule-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px; /* Увеличили размер шрифта */
+    color: #6b7280;
+    font-weight: 500;
+    word-wrap: break-word; /* Переносим длинные слова */
+    overflow-wrap: break-word; /* Дополнительная поддержка переноса */
+    white-space: normal; /* Разрешаем перенос строк */
+  }
+  
+  .card.schedule .schedule-detail-item .icon {
+    font-size: 12px;
+    opacity: 0.8;
+  }
+  
+  /* Красивый скроллбар для виджета расписания на мобильных */
+  .card.schedule .schedule-list::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .card.schedule .schedule-list::-webkit-scrollbar-track {
+    background: rgba(0, 177, 143, 0.1);
+    border-radius: 6px;
+    margin: 4px 0;
+  }
+  
+  .card.schedule .schedule-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, rgba(0, 177, 143, 0.5) 0%, rgba(3, 131, 106, 0.7) 100%);
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+  }
+  
+  .card.schedule .schedule-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, rgba(0, 177, 143, 0.7) 0%, rgba(3, 131, 106, 0.9) 100%);
+    box-shadow: 0 2px 4px rgba(0, 177, 143, 0.2);
+  }
+  
+  .card.schedule .schedule-list .meta {
+    display: none; /* Скрываем старую мета-информацию */
+  }
+  
+  /* Пустое состояние расписания для мобильных */
+  .card.schedule .schedule-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: #6b7280;
+  }
+  
+  .card.schedule .schedule-empty-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.6;
+  }
+  
+  .card.schedule .schedule-empty p {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+    color: #374151;
+  }
+  
+  .card.news {
+    grid-column: 1;
+    grid-row: 2; /* Новости второе */
+    order: 2;
+    /* Убираем фиксированную высоту, делаем высоту естественной */
+    max-height: none !important;
+    min-height: auto;
+    height: auto;
+  }
+  
+  .card.coins {
+    grid-column: 1;
+    grid-row: 3; /* Айтишки третье */
+    order: 3;
+    min-height: auto !important; /* Естественная высота */
+    max-height: none;
+    padding: 16px 20px;
+  }
+  
+  .card {
+    padding: 20px;
+    border-radius: 20px;
+    margin-bottom: 0;
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.08),
+      0 2px 16px rgba(0, 177, 143, 0.12);
+    border: 2px solid rgba(0, 177, 143, 0.15);
+  }
+  
+  .card h3 {
+    font-size: 18px;
+    margin-bottom: 16px;
+    font-weight: 700;
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .btn-details {
+    padding: 8px 16px;
+    font-size: 13px;
+    border-radius: 10px;
+  }
+  
+  .news-thumb {
+    height: 120px;
+    border-radius: 12px;
+  }
+  
+  .news-title {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  
+  .news-content {
+    padding: 16px;
+  }
+  
+  .news-expand-btn {
+    padding: 12px 0;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  
+  .news-date {
+    font-size: 12px;
+    opacity: 0.7;
+    margin-bottom: 8px;
+  }
+  
+  .news-scroll-container::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .news-description {
+    font-size: 14px;
+    padding: 0 12px;
+    margin: 0 -12px;
+  }
+  
+  .news-row.expanded .news-description {
+    padding: 12px;
+  }
+  
+  .event-details {
+    padding: 16px;
+    border-radius: 16px;
+  }
+  
+  .event-header h2 {
+    font-size: 16px;
+  }
+  
+  .info-item {
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
+  }
+  
+  .info-item span {
+    text-align: left;
+  }
+  
+  .status-badge {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+  
+  .btn-primary {
+    padding: 8px 16px;
+    font-size: 12px;
+    width: 100%;
+  }
+  
+  /* Дополнительные стили для компактных бесткоинов на мобильных */
+  .bestcoins-header {
+    margin-bottom: 8px;
+  }
+  
+  .bestcoins-header h3 {
+    font-size: 14px !important;
+  }
+  
+  .coins-info {
+    gap: 2px;
+  }
+  
+  .coins-loading,
+  .coins-source,
+  .coins-updated {
+    font-size: 9px;
+  }
+  
+  /* Компактный дизайн для самого компонента BestCoins */
+  .card.coins .bestcoins-container {
+    padding: 8px;
+  }
+}
+
+/* Адаптивность для планшетов */
+@media (max-width: 1200px) and (min-width: 769px) {
+  .main-content {
+    padding-top: 25px !important; /* Немного увеличиваем отступ для планшетов */
+  }
+  
+  .cards {
+    padding: 20px !important;
+    gap: 20px;
+    grid-template-columns: 1fr 1.5fr; /* На планшетах делаем новости чуть шире */
+  }
+  
+  /* Новости в одну колонку на планшетах */
+  .news-scroll-container {
+    column-count: 1; /* Одна колонка для новостей на планшетах */
+    column-gap: 0;
+  }
+  
+  .card {
+    padding: 20px;
+  }
+  
+  .card.coins {
+    max-height: 170px; /* Чуть больше на планшетах */
+    padding: 16px 18px;
+  }
+  
+  .event-details {
+    padding: 20px;
+  }
+}
+
+/* Специальные стили для больших экранов - две колонки новостей */
+@media (min-width: 1201px) {
+  .news-scroll-container {
+    column-count: 2; /* Две колонки только на больших экранах */
+    column-gap: 12px;
+  }
+  
+  .cards {
+    grid-template-columns: 1fr 2fr; /* Широкие новости на больших экранах */
+  }
+}
+
+/* Адаптивность для очень маленьких экранов */
+@media (max-width: 480px) {
+  /* Убираем серый фон и на очень маленьких экранах */
+  body, html, #root, .app-layout, .main-content {
+    background: #FFFFFF !important;
+    background-color: #FFFFFF !important;
+    overscroll-behavior: auto !important;
+    -webkit-overscroll-behavior: auto !important;
+  }
+  
+  .main-content {
+    padding-top: 85px !important; /* Еще больше отступ для очень маленьких экранов */
+  }
+  
+  .cards {
+    padding: 12px !important;
+    gap: 12px;
+  }
+  
+  .card {
+    padding: 12px;
+    border-radius: 12px;
+  }
+  
+  .card h3 {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  
+  /* Дополнительные настройки для карточек на маленьких экранах */
+  .card.coins {
+    min-height: 120px !important; /* Еще меньше на маленьких экранах */
+    max-height: 150px;
+  }
+  
+  .card.schedule {
+    min-height: auto !important; /* Автоматическая минимальная высота */
+    max-height: none !important; /* Убираем ограничение высоты */
+  }
+  
+  .card.schedule .schedule-container {
+    max-height: none !important; /* Убираем ограничение высоты */
+    padding: 8px;
+    gap: 6px;
+    overflow: visible; /* Показываем все элементы */
+  }
+  
+  .card.schedule .schedule-list {
+    gap: 6px; /* Меньше отступы между элементами */
+    max-height: none; /* Убираем ограничение высоты */
+    padding-right: 0; /* Убираем отступ для скроллбара */
+    overflow: visible; /* Показываем все элементы */
+  }
+  
+  .card.news {
+    max-height: 50vh !important; /* Еще меньше высота новостей */
+    min-height: 250px;
+  }
+  
+  .news-thumb {
+    height: 120px;
+  }
+  
+  .news-title {
+    font-size: 14px;
+  }
+  
+  .news-content {
+    padding: 14px;
+  }
+  
+  .news-expand-btn {
+    padding: 10px 0;
+    font-size: 11px;
+    gap: 6px;
+  }
+  
+  .news-description {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  
+  .news-date {
+    font-size: 12px;
+  }
+  
+  .news-date::before {
+    font-size: 11px;
+  }
+  
+  .news-row {
+    border-radius: 16px;
+    margin-bottom: 12px; /* Возвращаем margin-bottom для мобильных */
+    /* МОБИЛЬНЫЕ: новости в один столбик для лучшей читаемости */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    break-inside: auto; /* Убираем ограничения для мобильных */
+  }
+  
+  .news-scroll-container::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .event-details {
+    padding: 12px;
+    border-radius: 12px;
+  }
+  
+  .event-header h2 {
+    font-size: 14px;
+  }
+  
+  .info-item {
+    padding: 6px 0;
+  }
+  
+  .info-item strong,
+  .info-item span {
+    font-size: 12px;
+  }
+  
+  .status-badge {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+  
+  .btn-primary {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+  
+  .close-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+    top: 8px;
+    right: 8px;
+  }
+}
+
+/* Дополнительные правила для мобильной адаптивности */
+@media (max-width: 768px) {
+  /* Улучшаем видимость на мобильных */
+  .news-row:hover {
+    transform: none; /* Убираем hover эффекты на мобильных */
+  }
+  
+  .news-expand-btn {
+    padding: 12px 0; /* Увеличиваем область клика */
+    font-size: 13px;
+  }
+  
+  /* Адаптивность для временных кнопок тестирования */
+  .app-layout div[style*="position: fixed"] {
+    bottom: 10px !important;
+    right: 10px !important;
+  }
+  
+  .app-layout div[style*="position: fixed"] button {
+    padding: 8px 12px !important;
+    font-size: 11px !important;
+  }
+}
+
+/* Дополнительные правила для очень маленьких экранах */
+@media (max-width: 480px) {
+  /* Убираем эффекты blur для производительности */
+  .card {
+    backdrop-filter: blur(5px); /* Уменьшаем blur */
+  }
+  
+  .event-details {
+    backdrop-filter: blur(10px); /* Уменьшаем blur */
+  }
+  
+  /* Увеличиваем области клика для мобильных */
+  .news-row {
+    margin-bottom: 12px;
+  }
+  
+  .news-expand-btn {
+    padding: 14px 0;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  
+  /* Адаптивность для скроллбара */
+  .card.news::-webkit-scrollbar,
+  .news-list::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .event-details::-webkit-scrollbar {
+    width: 4px;
+  }
+}
+
+/* Правила для альбомной ориентации на мобильных */
+@media (max-width: 768px) and (orientation: landscape) {
+  .main-content {
+    padding-top: 70px !important;
+  }
+  
+  .cards {
+    grid-template-columns: 1fr 1fr; /* Две колонки в альбомной ориентации */
+    gap: 12px;
+    padding: 12px !important;
+  }
+  
+  /* В альбомной ориентации возвращаем обычное расположение */
+  .left-column {
+    order: 1;
+  }
+  
+  .right-column {
+    order: 2;
+  }
+  
+  .card.schedule {
+    order: 1;
+  }
+  
+  .card.coins {
+    order: 2;
+    min-height: 120px !important;
+  }
+  
+  .card.news {
+    max-height: calc(100vh - 120px);
+    min-height: 200px;
+  }
+}
+
+/* Правила для улучшения доступности на мобильных */
+@media (max-width: 768px) {
+  /* Увеличиваем минимальный размер интерактивных элементов */
+  .close-btn {
+    min-width: 44px;
+    min-height: 44px;
+    width: 44px;
+    height: 44px;
+  }
+  
+  .btn-primary {
+    min-height: 44px;
+    padding: 12px 16px;
+  }
+  
+  .news-row {
+    min-height: 60px; /* Минимальная высота для удобного нажатия */
+  }
+}
+
+/* ========== Стили для заголовков карточек и кнопок подробнее ========== */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.btn-details {
+  background: linear-gradient(135deg, #00B18F 0%, #03836A 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-width: 80px;
+  text-align: center; /* Центрируем текст */
+  display: inline-flex; /* Используем inline-flex для лучшего контроля */
+  align-items: center; /* Центрируем по вертикали */
+  justify-content: center; /* Центрируем по горизонтали */
+}
+
+.btn-details:hover {
+  background: linear-gradient(135deg, #03836A 0%, #025d4e 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 177, 143, 0.3);
+}
+
+.btn-details:active {
+  transform: translateY(0);
+}
+
+
+/* ===== Desktop-раскладка для admin/teacher/superadmin ===== */
+@media (min-width: 1024px) {
+  /* Только когда добавлен класс .cards--staff из HomePage.jsx */
+  .cards.cards--staff {
+    display: grid;
+    grid-template-columns: 1fr 2fr;  /* Расписание слева (1fr), Новости справа (2fr - шире) */
+    grid-template-rows: minmax(600px, auto); /* Минимальная высота 600px, но может быть больше */
+    gap: 24px;
+    align-items: stretch; /* Растягиваем элементы на всю высоту */
+  }
+
+  /* Ставим "Расписание" слева в ряду */
+  .cards.cards--staff .card.schedule {
+    grid-column: 1;
+    grid-row: 1;
+    min-height: 600px; /* Минимальная высота */
+    max-height: none; /* Убираем ограничение */
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Контейнер расписания растягиваем на всю высоту */
+  .cards.cards--staff .card.schedule .schedule-container {
+    min-height: 550px !important;
+    max-height: none !important;
+    height: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Внутренний скролл расписания */
+  .cards.cards--staff .card.schedule .schedule-container > div:not(.schedule-list) {
+    max-height: none;
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  /* Ставим "Новости" справа в ряду */
+  .cards.cards--staff .card.news {
+    grid-column: 2;
+    grid-row: 1;
+    min-height: 600px; /* Такая же минимальная высота */
+    max-height: none;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Прячем "Айтишки" для не-студентов (на всякий случай, если блок не обернули условием) */
+  .cards.cards--staff .card.coins {
+    display: none;
+  }
+}

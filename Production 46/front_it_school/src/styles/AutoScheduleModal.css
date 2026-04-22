@@ -1,0 +1,248 @@
+/* src/styles/AutoScheduleModal.css */
+
+.auto-schedule-modal .modal-content {
+  max-width: 600px;
+  width: 90%;
+}
+
+.schedule-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+}
+
+.form-control {
+  padding: 10px 12px;
+  border: 2px solid #e1e5e9;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  background: white;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.form-control.error {
+  border-color: #dc3545;
+  background-color: #fff5f5;
+}
+
+.error-text {
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+/* Превью расписания */
+.schedule-preview {
+  margin-top: 10px;
+  padding: 20px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 12px;
+  border: 1px solid #dee2e6;
+}
+
+.schedule-preview h3 {
+  margin: 0 0 15px 0;
+  color: #495057;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.schedule-preview h3:before {
+  content: "";
+}
+
+.preview-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.preview-item {
+  display: grid;
+  grid-template-columns: 80px 1fr 120px;
+  gap: 12px;
+  padding: 12px 15px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  border-left: 4px solid #007bff;
+  align-items: center;
+}
+
+.preview-item.more {
+  border-left-color: #6c757d;
+  opacity: 0.7;
+}
+
+.preview-lesson {
+  font-weight: 600;
+  color: #495057;
+  font-size: 13px;
+}
+
+.preview-date {
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.preview-time {
+  font-size: 12px;
+  color: #007bff;
+  font-weight: 500;
+  text-align: right;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .auto-schedule-modal .modal-content {
+    width: 95%;
+    max-width: none;
+    margin: 10px;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .preview-item {
+    grid-template-columns: 1fr;
+    gap: 5px;
+    text-align: center;
+  }
+  
+  .preview-time {
+    text-align: center;
+  }
+}
+
+/* Улучшения для селектов */
+.form-control select {
+  cursor: pointer;
+}
+
+.form-control option {
+  padding: 8px;
+}
+
+/* Анимации */
+.schedule-preview {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.preview-item {
+  animation: fadeInUp 0.3s ease-out;
+  animation-fill-mode: both;
+}
+
+.preview-item:nth-child(1) { animation-delay: 0.1s; }
+.preview-item:nth-child(2) { animation-delay: 0.2s; }
+.preview-item:nth-child(3) { animation-delay: 0.3s; }
+.preview-item:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Кастомные стили для времени */
+input[type="time"].form-control {
+  letter-spacing: 0.5px;
+}
+
+/* Фиксируем размер и поведение поля даты */
+input[type="date"].form-control {
+  position: relative;
+  max-width: 100%;
+  width: 100%;
+  display: block;
+}
+
+/* Убираем растягивание календаря */
+input[type="date"].form-control::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Предотвращаем случайные клики вне поля */
+.form-group {
+  position: relative;
+  contain: layout;
+}
+
+/* Изолируем поле даты */
+.form-group input[type="date"] {
+  pointer-events: auto;
+  contain: layout style;
+}
+
+/* Улучшения для мобильных устройств */
+@media (max-width: 480px) {
+  .schedule-settings {
+    gap: 15px;
+  }
+  
+  .form-group label {
+    font-size: 13px;
+  }
+  
+  .form-control {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+  
+  .schedule-preview {
+    padding: 15px;
+  }
+  
+  .preview-item {
+    padding: 10px 12px;
+  }
+}

@@ -66,23 +66,23 @@ services:
       - ./backendNotificationEmailService/.:/app/
     networks:
       - shool_site-network
-  frontend:
-    build:
-      context: .
-      dockerfile: ./docker/frontend/Dockerfile
+  # frontend:
+  #   build:
+  #     context: .
+  #     dockerfile: ./docker/frontend/Dockerfile
 
-    container_name: school_site_nginx_frontend
-    restart: unless-stopped
-    expose:
-      - 80
-      - 443
-    ports:
-      - "80:80"
-      - "443:443"
-    depends_on:
-      - main-app
-    networks:
-      - shool_site-network
+  #   container_name: school_site_nginx_frontend
+  #   restart: unless-stopped
+  #   expose:
+  #     - 80
+  #     - 443
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   depends_on:
+  #     - main-app
+  #   networks:
+  #     - shool_site-network
   minio:
     image: minio/minio:latest
     ports:

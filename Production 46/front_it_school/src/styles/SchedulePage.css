@@ -1,0 +1,1816 @@
+/* src/styles/SchedulePage.css */
+
+/* ========== ПЕРЕОПРЕДЕЛЕНИЕ CSS ПЕРЕМЕННЫХ FULLCALENDAR ========== */
+:root {
+  --fc-more-link-bg-color: linear-gradient(135deg, #00B18F 0%, #03836A 100%) !important;
+  --fc-more-link-text-color: white !important;
+}
+
+.fc {
+  padding: 5px;
+  --fc-more-link-bg-color: #00B18F !important;
+  --fc-more-link-text-color: white !important;
+}
+/* ========== КОНЕЦ ПЕРЕОПРЕДЕЛЕНИЯ ========== */
+
+/* ========== КРИТИЧЕСКАЯ ЗАГЛУШКА: Скрываем стандартные попапы FullCalendar ========== */
+/* Скрываем стандартный popover FullCalendar чтобы избежать ошибок getBoundingClientRect */
+.fc-popover,
+.fc-more-popover {
+
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  left: -9999px !important;
+  top: -9999px !important;
+}
+/* ========== КОНЕЦ ЗАГЛУШКИ ========== */
+
+/* ---------- Общий layout (как на главной) ---------- */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #FFFFFF;
+  font-family: 'Mont', sans-serif;
+}
+
+.main-content {
+  flex: 1;
+  overflow: visible;
+  padding: 0 24px 24px 24px; /* добавляем нижний отступ */
+  padding-top: 80px !important; /* Отступ сверху от TopBar */
+  padding-bottom: 40px !important; /* Отступ снизу */
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* Для полноэкранного режима расписания */
+.main-content.schedule-fullscreen-mode {
+  padding: 0 !important;
+  padding-top: 80px !important;
+  min-height: auto !important;
+  height: auto !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Скролл только на мобильных */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 0 16px 24px 16px;
+    padding-top: 40px !important; /* Меньший отступ на мобильных */
+    overflow-y: auto;
+    height: 100vh;
+    -webkit-overflow-scrolling: touch; /* Нативный скролл iOS */
+  }
+
+  /* Убираем верхний отступ в режиме fullscreen на мобильных */
+  .main-content.schedule-fullscreen-mode {
+    padding-top: 0 !important;
+  }
+}
+
+/* ---------- Панель управления фильтрами для админов ---------- */
+.admin-schedule-controls {
+  background: white;
+  border-radius: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  margin: 0;
+  border: none;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.filter-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  gap: 16px;
+}
+
+.filter-status {
+  flex: 1;
+}
+
+.filtered-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: #dbeafe;
+  color: #1e40af;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid #bfdbfe;
+}
+
+.all-items-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: #f0f9ff;
+  color: #0369a1;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid #e0f2fe;
+}
+
+.filter-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 38px;
+  white-space: nowrap;
+}
+
+.btn-filter {
+  background: #00B18F;
+  color: white;
+}
+
+.btn-filter:hover {
+  background: #03836A;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 177, 143, 0.3);
+}
+
+.btn-clear {
+  background: #ef4444;
+  color: white;
+  position: relative;
+}
+
+.btn-clear:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.btn-clear .clear-icon {
+  font-size: 18px;
+  font-weight: bold;
+  color: #dc2626;
+  line-height: 1;
+  margin-right: 4px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Основная страница расписания */
+.schedule-page {
+  padding-top: 20px !important; /* Дополнительный отступ сверху */
+  padding-bottom: 40px !important; /* Дополнительный отступ снизу */
+}
+
+/* ===== ПОЛНОЭКРАННЫЙ РЕЖИМ ===== */
+.schedule-page-fullscreen {
+  padding: 0 20px !important;
+  margin: 0 !important;
+  height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex: 1;
+}
+
+/* Для админов с панелью фильтрации */
+.schedule-page-fullscreen.has-admin-filters {
+  height: calc(100vh - 130px);
+}
+
+.schedule-layout-fullscreen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.calendar-widget-fullscreen {
+  flex: 1;
+  background: white;
+  border-radius: 16px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid rgba(0, 177, 143, 0.1) !important;
+  padding: 20px 20px 20px 20px !important;
+  margin: 0 !important;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-widget-fullscreen .fc {
+  flex: 1;
+  min-height: 0;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  padding-bottom: 0;
+}
+
+.calendar-widget-fullscreen .fc .fc-view-harness {
+  flex: 1 !important;
+  height: 100% !important;
+}
+
+.calendar-widget-fullscreen .fc .fc-scroller {
+  height: 100% !important;
+  overflow-y: auto !important;
+}
+
+.calendar-widget-fullscreen .fc .fc-scroller-liquid-absolute {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+}
+
+/* ---------- Loading ---------- */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  font-family: 'Mont', sans-serif;
+}
+
+.loading-container p {
+  margin-top: 16px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #00B18F;
+}
+
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(0, 177, 143, 0.2);
+  border-top: 4px solid #00B18F;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Заголовок расписания */
+.schedule-header {
+  padding: 24px;
+  background: white;
+  border-bottom: 1px solid rgba(0, 177, 143, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 16px 16px 0 0;
+}
+
+.page-title {
+  font-size: 28px;
+  color: #1A1A1A;
+  margin: 0;
+  font-family: 'Mont', sans-serif;
+  font-weight: 700;
+}
+
+.schedule-stats {
+  display: flex;
+  gap: 24px;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-size: 24px;
+  font-weight: 700;
+  color: #00B18F;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Основной layout расписания */
+.schedule-layout {
+  display: flex;
+  gap: 0; /* Убираем gap, так как теперь одна колонка */
+  margin-top: 24px !important;
+  margin-bottom: 40px !important;
+  padding-bottom: 40px !important;
+  min-height: calc(100vh - 200px);
+  width: 100%;
+}
+
+/* Календарь на всю ширину */
+.calendar-widget.full-width {
+  width: 100%;
+  height: auto;
+  min-height: calc(100vh - 200px);
+  background: white;
+  border-radius: 20px;
+  box-shadow: 
+    0 20px 60px rgba(0, 177, 143, 0.08),
+    0 8px 32px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 177, 143, 0.08);
+  overflow: hidden;
+  padding: 24px;
+}
+
+/* Адаптация для EventModal на странице расписания */
+.schedule-page .event-modal {
+  z-index: 9999;
+}
+
+.schedule-page .event-modal .modal-overlay {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+}
+
+.schedule-sidebar {
+  width: 300px;
+  flex-shrink: 0;
+  /* Позволяем боковой панели быть высокой */
+  height: auto;
+}
+
+.schedule-main {
+  flex: 1;
+  /* Убираем ограничения высоты */
+  height: auto;
+  min-height: 0px;
+}
+
+/* Виджеты боковой панели */
+.widget-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 177, 143, 0.1);
+  margin-bottom: 24px !important;
+  padding-bottom: 16px !important; /* Дополнительный отступ снизу в карточках */
+  overflow: hidden;
+  border: 1px solid rgba(0, 177, 143, 0.1);
+}
+
+.widget.nearest-lessons {
+  margin-bottom: 40px !important; /* Отступ снизу для виджета ближайших занятий */
+  padding-bottom: 24px !important;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 177, 143, 0.1);
+  border: 1px solid rgba(0, 177, 143, 0.1);
+  padding: 24px;
+}
+
+.widget.nearest-lessons h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1A1A1A;
+  margin: 0 0 16px 0;
+  font-family: 'Mont', sans-serif;
+}
+
+.widget-header {
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #00B18F 0%, #03836A 100%);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.widget-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Mont', sans-serif;
+}
+
+.widget-count {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.widget-content {
+  padding: 20px;
+  max-height: none; /* убираем ограничение */
+  overflow: visible;
+}
+
+/* Легенда */
+.legend-card {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 177, 143, 0.1);
+  border: 1px solid rgba(0, 177, 143, 0.1);
+}
+
+.legend-card h4 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  color: #1A1A1A;
+  font-family: 'Mont', sans-serif;
+  font-weight: 700;
+}
+
+.legend-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: #6b7280;
+  font-family: 'Mont', sans-serif;
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+.legend-color.opened {
+  background: #00B18F;
+}
+
+.legend-color.scheduled {
+  background: #FFC107;
+}
+
+.legend-color.closed {
+  background: #6c757d;
+}
+
+/* Контейнер календаря - ИСПРАВЛЕНО для полной прокрутки */
+.calendar-container {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 177, 143, 0.1);
+  padding: 20px;
+  border: 1px solid rgba(0, 177, 143, 0.1);
+  /* УБИРАЕМ фиксированную высоту, позволяем контенту определять размер */
+  min-height: 400px;
+  max-height: 450px; /* убираем ограничение высоты */
+  overflow: visible; /* делаем прокрутку видимой */
+}
+
+/* Календарь расписания */
+.calendar-widget {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 177, 143, 0.1);
+  padding: 20px !important;
+  margin-top: 20px !important; /* Отступ сверху */
+  margin-bottom: 40px !important; /* Отступ снизу */
+  overflow: hidden;
+  border: 1px solid rgba(0, 177, 143, 0.1);
+}
+
+/* Дополнительные отступы для самого календарного компонента */
+.fc {
+  margin-top: 10px !important;
+  font-family: 'Mont', sans-serif !important;
+}
+
+/* Стили FullCalendar */
+.fc-toolbar-title {
+  font-size: 24px !important;
+  color: #1A1A1A !important;
+  font-weight: 700 !important;
+  font-family: 'Mont', sans-serif !important;
+}
+
+.fc .fc-button {
+  background-color: #00B18F !important;
+  border: none !important;
+  color: white !important;
+  border-radius: 8px !important;
+  padding: 8px 16px !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  transition: all 0.2s ease !important;
+  font-family: 'Mont', sans-serif !important;
+  box-shadow: 2px 2px 0.3px #03836A !important;
+  margin: 0 4px !important; /* Отступы между кнопками */
+}
+
+.fc .fc-button:hover {
+  background-color: #00A081 !important;
+  box-shadow: 1px 1px 0.3px #03836A !important;
+  transform: translate(1px, 1px) !important;
+}
+
+.fc .fc-button:disabled {
+  background-color: #00A081!important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Группа кнопок (Месяц/Неделя/День/Сегодня) */
+.fc-button-group {
+  padding: 5px !important;
+}
+
+/* Десктопные эффекты */
+@media (min-width: 769px) {
+  .fc-event {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    backdrop-filter: blur(10px) !important;
+  }
+  
+  .fc-event::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.15) 0%, 
+      transparent 50%, 
+      rgba(0, 0, 0, 0.05) 100%) !important;
+    pointer-events: none !important;
+  }
+
+  .fc-event:hover {
+    transform: translateY(-2px) scale(1.02) !important;
+    box-shadow: 
+      0 8px 32px rgba(0, 177, 143, 0.2),
+      0 4px 16px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+  }
+}
+
+.fc .fc-timegrid-slot-label {
+  font-size: 11px !important;
+  color: #6b7280 !important;
+  font-weight: 500 !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  font-family: 'Mont', sans-serif !important;
+}
+
+.fc .fc-timegrid-slot {
+  height: 30px !important; /* Уменьшили высоту для компактности */
+}
+
+/* Прокрутка календаря в режимах Week/Day */
+.fc .fc-scroller {
+  overflow-y: auto !important;
+ 
+}
+
+/* Убираем лишние отступы в timeGrid режимах */
+.fc-timegrid {
+  margin-top: 10px !important;
+}
+
+/* Стили для корректного отображения временных слотов */
+.fc .fc-timegrid-slot-label-frame {
+  min-height: 30px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Стили для заголовка времени */
+.fc .fc-timegrid-axis {
+  width: 60px !important; /* Ширина колонки времени */
+}
+
+.fc .fc-timegrid-slot-minor {
+  border-top: 1px solid #f0f0f0 !important;
+}
+
+.fc .fc-timegrid-slot-major {
+  border-top: 1px solid #ddd !important;
+}
+
+.fc .fc-scrollgrid {
+  border: 1px solid rgba(0, 177, 143, 0.1) !important;
+  border-radius: 8px !important;
+}
+
+.fc-daygrid-day-top {
+  flex-direction: row !important;
+  justify-content: center !important;
+}
+
+.fc-col-header-cell {
+  background: rgba(0, 177, 143, 0.05) !important;
+  border-bottom: 2px solid rgba(0, 177, 143, 0.1) !important;
+  font-weight: 700 !important;
+  font-family: 'Mont', sans-serif !important;
+}
+
+/* ДОБАВЛЕНО: стили для рабочих часов */
+.fc .fc-business-hours {
+  background-color: rgba(0, 177, 143, 0.05) !important;
+}
+
+/* ДОБАВЛЕНО: текущее время */
+.fc .fc-timegrid-now-indicator-line {
+  border-color: #00B18F !important;
+  border-width: 2px !important;
+}
+
+.fc .fc-timegrid-now-indicator-arrow {
+  border-color: #00B18F !important;
+}
+
+/* ДОБАВЛЕНО: выделение выходных дней */
+.fc .fc-day-sat,
+.fc .fc-day-sun {
+  background-color: rgba(248, 252, 251, 0.5) !important;
+}
+
+/* Модальное окно с деталями события */
+.event-details-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 24px;
+}
+
+.event-details {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 177, 143, 0.2);
+  max-width: 500px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  border: 1px solid rgba(0, 177, 143, 0.1);
+}
+
+.close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(0, 177, 143, 0.1);
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #00B18F;
+}
+
+.close-btn:hover {
+  background: rgba(0, 177, 143, 0.2);
+  color: #03836A;
+}
+
+.event-header {
+  padding: 24px 24px 16px 24px;
+  border-bottom: 1px solid rgba(0, 177, 143, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.event-header h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #1A1A1A;
+  line-height: 1.3;
+  font-family: 'Mont', sans-serif;
+  font-weight: 700;
+}
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  font-family: 'Mont', sans-serif;
+}
+
+.status-badge.opened {
+  background: #E8F8F5;
+  color: #00B18F;
+}
+
+.status-badge.closed {
+  background: #FEF2F2;
+  color: #DC2626;
+}
+
+.event-info {
+  padding: 24px;
+}
+
+.info-item {
+  display: flex;
+  margin-bottom: 16px;
+  gap: 12px;
+}
+
+.info-item strong {
+  min-width: 120px;
+  color: #6b7280;
+  font-size: 14px;
+  font-family: 'Mont', sans-serif;
+}
+
+.info-item span {
+  color: #1A1A1A;
+  font-size: 14px;
+  font-family: 'Mont', sans-serif;
+}
+
+.event-description {
+  padding: 0 0px 0px 0px;
+  border-top: 1px solid rgba(0, 177, 143, 0.1);
+  margin-top: 16px;
+  padding-top: 0px;
+}
+
+.event-description strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.event-description p {
+  margin: 0;
+  color: #1e1e2f;
+  line-height: 1.6;
+}
+
+.event-actions {
+  padding: 16px 16px 16px 16px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.btn-primary {
+  /* Используем фирменный зеленый стиль из ManageUserPage.css */
+  background: #00B18F;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  box-shadow: 4px 4px 0.3px #03836A;
+}
+
+.btn-primary:hover {
+  background: #03836A;
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0.3px #03836A;
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+  .main-content {
+    padding-top: 90px !important; /* Больше отступ на планшетах */
+    padding-bottom: 50px !important;
+  }
+  
+  .schedule-page {
+    padding-bottom: 50px !important;
+  }
+  
+  .schedule-layout {
+    flex-direction: column;
+    margin-bottom: 50px !important;
+    padding-bottom: 50px !important;
+  }
+  
+  .schedule-sidebar {
+    width: 100%;
+    max-height: 300px;
+  }
+  
+  .schedule-stats {
+    gap: 16px;
+  }
+  
+  .stat-number {
+    font-size: 20px;
+  }
+  
+  /* ДОБАВЛЕНО: адаптивность для календаря */
+  .calendar-container {
+    height: calc(100vh - 350px);
+  }
+  
+  .calendar-widget {
+    margin-bottom: 50px !important;
+  }
+  
+  .fc .fc-timegrid-slot {
+    height: 25px !important;
+  }
+
+  /* Стили для кнопки очистки фильтров на планшетах */
+  .btn-clear .clear-icon {
+    font-size: 16px;
+    margin-right: 5px;
+    font-weight: bold;
+    color: #dc2626;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding-top: 100px !important; /* Еще больше отступ на мобильных */
+    padding-bottom: 60px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    -webkit-overflow-scrolling: touch; /* Нативный скролл iOS */
+  }
+  
+  .schedule-page {
+    padding-bottom: 60px !important;
+  }
+
+  /* На мобильных TopBar скрыт, поэтому не вычитаем desktop-отступы (80/130px) */
+  .schedule-page-fullscreen,
+  .schedule-page-fullscreen.has-admin-filters {
+    padding: 0 !important;
+    height: calc(100vh - 24px) !important;
+    height: calc(100dvh - 24px) !important;
+    min-height: calc(100vh - 24px) !important;
+    min-height: calc(100dvh - 24px) !important;
+  }
+
+  .main-content.schedule-fullscreen-mode {
+    padding-bottom: 16px !important;
+  }
+
+  .schedule-layout-fullscreen,
+  .calendar-widget-fullscreen,
+  .calendar-widget-fullscreen .fc,
+  .calendar-widget-fullscreen .fc .fc-view-harness {
+    min-height: 0 !important;
+    height: 100% !important;
+  }
+  
+  .schedule-layout {
+    gap: 16px;
+    margin-top: 16px !important;
+    margin-bottom: 60px !important;
+    padding-bottom: 60px !important;
+  }
+  
+  .schedule-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  
+  .calendar-container {
+    height: calc(100vh - 400px);
+    padding: 12px;
+  }
+  
+  .calendar-widget {
+    margin-bottom: 60px !important;
+    padding: 16px !important;
+    /* Убираем backdrop-filter на мобильных для лучшей производительности */
+    backdrop-filter: none !important;
+  }
+  
+  .widget.nearest-lessons {
+    margin-bottom: 50px !important;
+    padding-bottom: 30px !important;
+  }
+  
+  .event-details-overlay {
+    padding: 16px;
+  }
+
+  /* Мобильные стили для FullCalendar */
+  .fc-header-toolbar {
+    flex-direction: column !important;
+    gap: 12px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .fc-toolbar-chunk {
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+  .fc-button-group {
+    padding:5px;
+    margin: 0 6px !important; /* Небольшие отступы между группами на мобильных */
+    gap: 8px !important;
+    display: flex !important;
+  }
+
+  .fc-button {
+    padding: 8px 12px !important;
+    font-size: 13px !important;
+    margin: 0 3px !important; /* Меньшие отступы между кнопками на мобильных */
+    /* Убираем трансформации на мобильных */
+    transform: none !important;
+  }
+  
+  .fc-button:hover {
+    transform: none !important;
+  }
+
+  .fc-event {
+    font-size: 12px !important;
+    padding: 2px 4px !important;
+    border-radius: 6px !important;
+    /* Убираем анимации и эффекты */
+    transition: none !important;
+    backdrop-filter: none !important;
+  }
+  
+  .fc-event::before {
+    display: none !important;
+  }
+
+  .fc-event-title {
+    font-weight: 500 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .fc-daygrid-event {
+    margin-bottom: 2px !important;
+  }
+
+  .fc-h-event {
+    border: none !important;
+  }
+
+  /* Адаптация календаря под тач */
+  .fc-timegrid-slot {
+    min-height: 40px !important;
+  }
+
+  .fc-timegrid-axis {
+    width: 50px !important;
+  }
+
+  .fc-timegrid-axis-frame {
+    padding: 4px !important;
+  }
+
+  .fc-scrollgrid-sync-table {
+    font-size: 12px !important;
+  }
+  
+  /* ДОБАВЛЕНО: мобильные стили для календаря */
+  .fc .fc-timegrid-slot-label {
+    font-size: 10px !important;
+  }
+  
+  .fc .fc-timegrid-slot {
+    height: 20px !important;
+  }
+  
+  .fc-event {
+    font-size: 11px !important;
+    padding: 1px 4px !important;
+  }
+}
+
+/* ДОБАВЛЕНО: стили для лучшего отображения в расширенное время */
+@media (min-width: 1400px) {
+  .calendar-container {
+    height: calc(60vh - 160px);
+  }
+  
+  .fc .fc-timegrid-slot {
+    height: 35px !important;
+  }
+  
+  .fc .fc-timegrid-slot-label {
+    font-size: 12px !important;
+  }
+}
+
+/* Стили для дней недели в календаре */
+.fc .fc-day-header {
+  font-family: 'Mont', sans-serif !important;
+  font-weight: 700 !important;
+  color: #00B18F !important;
+  font-size: 14px !important;
+}
+
+/* Стили для номеров дней */
+.fc .fc-daygrid-day-number {
+  font-family: 'Mont', sans-serif !important;
+  font-weight: 600 !important;
+  color: #1A1A1A !important;
+}
+
+/* Стили для сегодняшнего дня */
+.fc .fc-day-today {
+  background-color: rgba(0, 177, 143, 0.1) !important;
+}
+
+.fc .fc-day-today .fc-daygrid-day-number {
+  color: #00B18F !important;
+  font-weight: 700 !important;
+}
+
+/* Мобильные стили для панели фильтрации */
+@media (max-width: 768px) {
+  .filter-info {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .filter-status {
+    width: 100%;
+  }
+
+  .filter-controls {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .filtered-badge,
+  .all-items-badge {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+
+  .btn {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
+
+  .btn-clear .clear-icon {
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: 6px;
+    color: #dc2626;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 0.8;
+  }
+
+  .btn-clear {
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+
+/* ======== “Журнальный” вид, как на 4–5 скринах ======== */
+
+/* Скрываем дефолтные внутренности, используем свой шаблон */
+.fc-event .fc-event-main,
+.fc-daygrid-event .fc-event-main {
+  padding: 0 !important;
+}
+
+/* Карточка события (week/day) */
+.fc-timegrid-event,
+.fc-daygrid-event {
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 10px !important;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+/* Мобильные события без анимаций */
+@media (max-width: 768px) {
+  .fc-timegrid-event,
+  .fc-daygrid-event {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04) !important;
+  }
+}
+
+/* ЛЕВАЯ цветная полоса статуса */
+.fc-timegrid-event::after,
+.fc-daygrid-event::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 4px;
+  background: var(--ev-color, #00B18F);
+}
+
+/* Цвета статусов (похоже на примеры: зелёные/жёлтые/серые) */
+.fc-ev-opened  { --ev-color:#00B18F; }
+.fc-ev-upcoming{ --ev-color:#FFC107; }
+.fc-ev-closed  { --ev-color:#9CA3AF; }
+
+/* Внутренний контент карточки из eventContent */
+.fc-card { padding: 8px 10px 10px 12px; }
+.fc-card-time {
+  font-size: 12px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 2px;
+  white-space: nowrap; /* Не переносим время на новую строку */
+  overflow: visible; /* Показываем всё время */
+}
+.fc-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.25;
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fc-card-sub {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #6b7280;
+  line-height: 1.2;
+}
+
+/* Иконки (teacher/room) маленькие, как на примере) */
+.fc-i { display:inline-block; width:12px; height:12px; opacity:.7; }
+.fc-i-teacher { background: radial-gradient(#6b7280 40%, transparent 41%) center/100% 100% no-repeat; border-radius:50%; }
+.fc-i-room {
+  position: relative;
+}
+.fc-i-room::before, .fc-i-room::after {
+  content:""; position:absolute; left:4px; background:#6b7280;
+}
+.fc-i-room::before { top:2px; width:4px; height:8px; border-radius:2px; }
+.fc-i-room::after  { bottom:0; width:8px; height:2px; border-radius:2px; left:2px; }
+
+/* Списочные события в MONTH — компактные “пилюли” */
+.fc-daygrid-event {
+  padding: 0 !important;
+  min-height: 26px;
+}
+.fc-daygrid-day .fc-daygrid-event-harness {
+  margin: 2px 4px !important;
+}
+.fc-daygrid-event .fc-card {
+  padding: 6px 8px 6px 10px;
+}
+.fc-daygrid-event .fc-card-time {
+  display: inline-block;
+  margin-right: 6px;
+  font-size: 12px;
+  color: #0f172a;
+}
+.fc-daygrid-event .fc-card-title {
+  display: inline-block;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+/* Убираем “точку” у daygrid и дефолтные стили */
+.fc-daygrid-event-dot { display: none !important; }
+
+/* Заголовки колонок недели: имя дня + дата визуально ближе к примеру */
+.fc-col-header-cell-cushion {
+  font-weight: 700 !important;
+  color: #111827 !important;
+}
+
+/* Подсветка текущего дня (мягкая) */
+.fc .fc-day-today {
+  background-color: rgba(0, 177, 143, 0.06) !important;
+}
+
+/* Сетка таймгрида — тонкие линии, как в примерах */
+.fc .fc-timegrid-slot { height: 36px !important; }
+.fc .fc-timegrid-slot-minor { border-top: 1px solid #f3f4f6 !important; }
+.fc .fc-timegrid-slot-major { border-top: 1px solid #e5e7eb !important; }
+
+/* Кнопки режима — уже стилизованы, чуть скруглим сильнее */
+.fc .fc-button { border-radius: 10px !important; }
+
+/* Чуть меньше отступов у календаря */
+.calendar-widget.full-width { padding: 18px; }
+
+/* “ещё +n” — как лаконичная ссылка */
+/* Внутри карточки события: строка "время + название" */
+.fc-ev__row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.fc-ev__time {
+  font-weight: 800;
+  font-size: 11px;
+  line-height: 1;
+  padding: 3px 6px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.04);
+}
+
+.fc-ev__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Чуть плотнее в месячном виде */
+.fc-daygrid-event .fc-ev__time {
+  margin-right: 2px;
+}
+
+/* В недельном/дневном — оставляем так же, чтобы стиль был единым */
+/* Карточка события: вертикальная компоновка */
+.fc-card--stack {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Время — приглушённое */
+.fc-card-time {
+  color: #6b7280;          /* серый */
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;     /* Не переносим время на новую строку */
+  overflow: visible;       /* Показываем всё время полностью */
+}
+
+/* Название — жирнее и темнее */
+.fc-card-title {
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Подписи (преподаватель/аудитория) */
+.fc-card-sub {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* Иконки слева (если используете) */
+.fc-i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.fc-i-teacher { background: #9CA3AF; }
+.fc-i-room    { background: #CBD5E1; }
+
+/* Чуть крупнее в month-виде (читабельнее) */
+.fc-daygrid-event .fc-card-time { font-size: 13px; }
+.fc-daygrid-event .fc-card-title { font-size: 13px; }
+/* Карточка события с акцентным цветом от JS (CSS-переменные) */
+.fc-event {
+  --ev-accent: #00B18F;
+  --ev-accent-bg: rgba(0,177,143,0.10);
+  --ev-accent-border: rgba(0,177,143,0.85);
+  border: none !important;
+  overflow: hidden !important;
+}
+
+.fc-card {
+  position: relative;
+  border-radius: 12px;
+  padding: 10px 12px 10px 14px;
+  background: var(--ev-accent-bg);
+  border-left: 6px solid var(--ev-accent);
+  border-right: 1px solid var(--ev-accent-border);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.fc-card-time {
+  color: #6B7280;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1;
+  margin-bottom: 2px;
+  white-space: nowrap; /* Не переносим время на новую строку */
+  overflow: visible;   /* Показываем всё время полностью */
+}
+
+.fc-card-title {
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.25;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.fc-card-sub {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: #6B7280; margin-top: 2px;
+}
+
+.fc-i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.fc-i-teacher { background: #9CA3AF; }
+.fc-i-room    { background: #CBD5E1; }
+
+/* компактнее в месячном виде */
+.fc-daygrid-event .fc-card-time,
+.fc-daygrid-event .fc-card-title { font-size: 13px; }
+/* УБРАТЬ внешнюю зеленую полоску у контейнера события */
+.fc-timegrid-event::after,
+.fc-daygrid-event::after {
+  content: none !important;
+  display: none !important;
+}
+/* ===== Mobile listWeek (FullCalendar) ===== */
+@media (max-width: 768px) {
+  /* Оптимизация скролла для мобильных */
+  .fc,
+  .fc-scroller,
+  .fc-list {
+    -webkit-overflow-scrolling: touch !important;
+    transform: translateZ(0) !important; /* GPU ускорение */
+    backface-visibility: hidden !important;
+    perspective: 1000px !important;
+  }
+
+  .fc-header-toolbar { gap: 8px !important; margin-bottom: 12px !important; }
+  .fc-toolbar-title { font-size: 18px !important; }
+
+  .fc .fc-list { border-radius: 14px; overflow: hidden; }
+  .fc .fc-list-day-cushion {
+    background: rgba(0,177,143,0.08) !important;
+    color: #0f172a !important;
+    font-weight: 700 !important;
+  }
+  .fc .fc-list-table { font-size: 14px; }
+  
+  /* Полный фон для каждого события в списке */
+  .fc-list-event {
+    background: white !important;
+    border-bottom: 1px solid rgba(0, 177, 143, 0.1) !important;
+    margin-bottom: 4px !important;
+  }
+  
+  .fc-list-event td { 
+    padding: 12px 14px !important; 
+    background: white !important;
+  }
+  
+  .fc-list-event:hover { 
+    background: rgba(0, 177, 143, 0.05) !important;
+  }
+  
+  .fc-list-event .fc-list-event-time {
+    background: rgba(0, 177, 143, 0.1) !important;
+    color: #00B18F !important;
+    padding: 4px 8px !important;
+    border-radius: 6px !important;
+    font-weight: 700 !important;
+  }
+
+  /* Внутри строки события — аккуратная «карточка» с фоном */
+  .fc-listcard { 
+    display: grid; 
+    gap: 6px;
+    background: white !important;
+    padding: 8px !important;
+    border-radius: 10px !important;
+    border-left: 4px solid var(--ev-accent, #00B18F) !important;
+    box-shadow: 0 2px 8px rgba(0, 177, 143, 0.08) !important;
+  }
+  
+  .fc-listcard-title { 
+    font-weight: 800; 
+    color: #111827; 
+    line-height: 1.25; 
+    font-size: 14px !important;
+  }
+  
+  .fc-listcard-meta { 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 8px; 
+    align-items: center; 
+    font-size: 12px; 
+    color: #6b7280; 
+  }
+  
+  .fc-listcard-time { 
+    font-weight: 700; 
+    white-space: nowrap;
+    background: rgba(0, 177, 143, 0.15) !important;
+    color: #00B18F !important;
+    padding: 3px 8px !important;
+    border-radius: 6px !important;
+    font-size: 11px !important;
+  }
+  
+  .fc-listcard-dot { opacity: .6; }
+
+  /* Скрываем точки FullCalendar в списке событий */
+  .fc-list-event-dot {
+    display: none !important;
+  }
+}
+
+/* ===== Стилизация "еще N" и popover для накладывающихся событий ===== */
+
+/* Позиционирование кнопки "+N еще" внизу ячейки дня */
+.fc-daygrid-day-bottom {
+  margin-top: 4px !important;
+  display: flex !important;
+  justify-content: center !important;
+  padding: 4px 0 !important;
+}
+
+/* Переопределяем стиль кнопки "+N" - делаем зеленой */
+.fc-daygrid-more-link,
+.fc-timegrid-more-link,
+a.fc-daygrid-more-link,
+a.fc-timegrid-more-link { 
+  font-weight: 600 !important; 
+  color: white !important;
+  font-size: 13px !important;
+  padding: 8px 16px !important;
+  border-radius: 20px !important;
+  background: #00B18F !important;
+  background-color: #00B18F !important;
+  transition: all 0.2s ease !important;
+  font-family: 'Mont', sans-serif !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  white-space: nowrap !important;
+  text-decoration: none !important;
+  line-height: 1.2 !important;
+  border: none !important;
+  min-width: 90px !important;
+  height: 32px !important;
+  box-shadow: 0 2px 4px rgba(0, 177, 143, 0.2) !important;
+  cursor: pointer !important;
+  position: relative !important;
+  margin: 4px auto !important;
+  /* Переопределяем переменные */
+  --fc-more-link-bg-color: #00B18F !important;
+  --fc-more-link-text-color: white !important;
+}
+
+/* Добавляем слово "еще" перед числом в timegrid видах */
+.fc-timegrid-more-link::before,
+a.fc-timegrid-more-link::before {
+  content: "еще " !important;
+  font-weight: 600 !important;
+}
+
+/* Корректируем позицию кнопки по вертикали в timegrid */
+.fc-timegrid-more-link,
+a.fc-timegrid-more-link {
+  top: 600px !important; /* Фиксированная позиция сверху */
+}
+
+.fc-daygrid-more-link:hover,
+.fc-timegrid-more-link:hover,
+a.fc-daygrid-more-link:hover,
+a.fc-timegrid-more-link:hover {
+  background: #03836A !important; /* Тёмно-зелёный при наведении */
+  background-color: #03836A !important;
+  color: white !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 8px rgba(0, 177, 143, 0.3) !important;
+}
+
+.fc-daygrid-more-link:active,
+.fc-timegrid-more-link:active,
+a.fc-daygrid-more-link:active,
+a.fc-timegrid-more-link:active {
+  transform: translateY(0px) !important;
+  box-shadow: 0 1px 2px rgba(0, 177, 143, 0.2) !important;
+}
+
+/* Полностью скрываем стандартный popover FullCalendar (используем кастомный) */
+.fc-popover {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Заголовок popover */
+.fc-popover-header {
+  background: linear-gradient(135deg, #00B18F 0%, #03836A 100%) !important;
+  color: white !important;
+  padding: 12px 16px !important;
+  font-weight: 700 !important;
+  font-family: 'Mont', sans-serif !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+/* Убираем дату из заголовка popover */
+.fc-popover-title {
+  display: none !important;
+}
+
+/* Добавляем свой текст в заголовок */
+.fc-popover-header::before {
+  content: "Занятия" !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+}
+
+/* Кнопка закрытия popover */
+.fc-popover-close {
+  color: white !important;
+  opacity: 0.9 !important;
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  font-size: 18px !important;
+  border: none !important;
+  padding: 0 !important;
+  margin-left: auto !important;
+}
+
+.fc-popover-close:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+  opacity: 1 !important;
+}
+
+/* Тело popover с событиями */
+.fc-popover-body {
+  padding: 8px !important;
+  max-height: 300px !important;
+  overflow-y: auto !important;
+}
+
+/* События внутри popover - убираем дату */
+.fc-popover .fc-daygrid-event {
+  margin-bottom: 4px !important;
+  border-radius: 8px !important;
+}
+
+.fc-popover .fc-event-time {
+  display: none !important;
+}
+
+/* Стрелка popover в наших цветах */
+.fc-popover .fc-popover-arrow {
+  border-bottom-color: #00B18F !important;
+}
+
+.fc-popover .fc-popover-arrow::after {
+  border-bottom-color: #00B18F !important;
+}
+
+/* Мобильная адаптация popover */
+@media (max-width: 768px) {
+  .fc-popover {
+    max-width: calc(100vw - 40px) !important;
+    transform: translateX(-10px) !important;
+  }
+  
+  .fc-popover-body {
+    max-height: 250px !important;
+  }
+  
+  /* Адаптация кнопки "+N" для мобильных */
+  .fc-daygrid-more-link,
+  .fc-timegrid-more-link,
+  a.fc-daygrid-more-link,
+  a.fc-timegrid-more-link {
+    font-size: 12px !important;
+    padding: 6px 12px !important;
+    margin: 3px !important;
+    min-width: 60px !important;
+    height: 28px !important;
+  }
+}
+
+/* ===== КАСТОМНЫЙ ПОПАП ДЛЯ СКРЫТЫХ ЗАНЯТИЙ ===== */
+
+/* Кастомный попап для показа ТОЛЬКО скрытых событий */
+.fc-more-popover-custom {
+  position: fixed;
+  background: white;
+  border: 2px solid var(--popover-accent-border, rgba(0, 177, 143, 0.4));
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15), 
+              0 4px 16px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  min-width: 280px;
+  max-width: 400px;
+  z-index: 10000;
+  animation: popoverFadeIn 0.2s ease;
+}
+
+@keyframes popoverFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Заголовок попапа */
+.fc-more-popover-header {
+  background: linear-gradient(135deg, 
+    var(--popover-accent, #00B18F) 0%, 
+    color-mix(in srgb, var(--popover-accent, #00B18F) 80%, black) 100%);
+  color: white;
+  padding: 12px 16px;
+  font-weight: 700;
+  font-family: 'Mont', sans-serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+/* Кнопка закрытия */
+.fc-more-popover-close {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.fc-more-popover-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+/* Тело попапа */
+.fc-more-popover-body {
+  padding: 8px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.fc-more-popover-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.fc-more-popover-body::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.fc-more-popover-body::-webkit-scrollbar-thumb {
+  background: var(--popover-accent, #00B18F);
+  border-radius: 3px;
+  opacity: 0.5;
+}
+
+.fc-more-popover-body::-webkit-scrollbar-thumb:hover {
+  opacity: 0.7;
+}
+
+/* События в попапе */
+.fc-more-event {
+  background: var(--popover-accent-bg, rgba(0, 177, 143, 0.08));
+  border: 1px solid var(--popover-accent-border, rgba(0, 177, 143, 0.2));
+  border-left: 4px solid var(--popover-accent, #00B18F);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.fc-more-event:hover {
+  background: var(--popover-accent-bg, rgba(0, 177, 143, 0.15));
+  border-color: var(--popover-accent, #00B18F);
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.fc-more-event:last-child {
+  margin-bottom: 0;
+}
+
+/* Время события */
+.fc-more-event-time {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--popover-accent, #00B18F);
+  margin-bottom: 4px;
+  font-family: 'Mont', sans-serif;
+}
+
+/* Название события */
+.fc-more-event-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 4px;
+  font-family: 'Mont', sans-serif;
+}
+
+/* Дополнительная информация */
+.fc-more-event-sub {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Мобильная адаптация кастомного попапа */
+@media (max-width: 768px) {
+  .fc-more-popover-custom {
+    max-width: calc(100vw - 40px);
+    min-width: 260px;
+  }
+  
+  .fc-more-popover-body {
+    max-height: 250px;
+  }
+}

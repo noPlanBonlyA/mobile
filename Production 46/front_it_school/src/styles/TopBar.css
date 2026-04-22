@@ -1,0 +1,1030 @@
+.topbar {
+  height: 70px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 240px; /* Ширина сайдбара */
+  right: 0;
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(0, 177, 143, 0.08);
+  overflow: visible !important; /* Важно для отображения dropdown */
+}
+
+.topbar-content {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  overflow: visible !important; /* Важно для отображения dropdown */
+}
+
+.topbar-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-height: 70px; /* Обеспечиваем минимальную высоту */
+}
+
+.page-title {
+  font-size: 26px;
+  font-weight: 500;
+  background: linear-gradient(135deg, #03836A 0%, #00B18F 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+  padding: 0;
+  line-height: 1.2;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Inter', sans-serif;
+  letter-spacing: -0.02em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  overflow: visible !important; /* Важно для отображения dropdown */
+}
+
+/* Поиск */
+.search {
+  position: relative;
+}
+.search input {
+  width: 300px;
+  padding: 8px 12px 8px 36px;
+  border: 1px solid #D5D5D5;
+  border-radius: 19px;
+  background: #FFFFFF;
+  font-size: 14px;
+}
+.search .la-search {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #919191;
+}
+
+.spacer {
+  flex: 1;
+}
+
+/* Уведомления */
+.notification-wrapper {
+  position: relative;
+  overflow: visible !important; /* Важно для отображения dropdown */
+}
+
+.notification-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.notification-btn:hover {
+  background-color: rgba(0, 177, 143, 0.1);
+}
+
+.bell-icon {
+  width: 24px;
+  height: 24px;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+  filter: brightness(0) saturate(100%) invert(53%) sepia(84%) saturate(1329%) hue-rotate(123deg) brightness(94%) contrast(86%);
+}
+
+.notification-btn:hover .bell-icon {
+  opacity: 1;
+}
+
+.notification-count {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: linear-gradient(135deg, #00B18F, #03836A);
+  color: white;
+  border-radius: 50%;
+  min-width: 20px;
+  height: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+  box-shadow: 
+    0 2px 8px rgba(0, 177, 143, 0.4),
+    0 1px 3px rgba(0, 0, 0, 0.12);
+  font-family: 'Mont', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+/* Оверлей для мобильных устройств */
+.notification-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.notification-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  left: auto;
+  background: #FFFFFF;
+  border: 2px solid rgba(0, 177, 143, 0.2);
+  border-radius: 16px;
+  width: 380px;
+  max-height: 500px; /* Фиксированная максимальная высота */
+  box-shadow: 
+    0 16px 48px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 177, 143, 0.2);
+  z-index: 9999 !important;
+  overflow: hidden;
+  transform: translateX(0);
+  will-change: auto;
+  animation: fadeInFast 0.05s ease-out;
+  overflow-x: hidden;
+  word-wrap: break-word;
+  display: block !important;
+  visibility: visible !important;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Адаптация для узких экранов на десктопе */
+@media (max-width: 420px) {
+  .notification-dropdown {
+    right: 0;
+    width: calc(100vw - 40px);
+    max-width: 380px;
+    overflow-x: hidden;
+    word-wrap: break-word;
+  }
+}
+
+@keyframes fadeInFast {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes mobileDropdownShow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.notification-header {
+  padding: 0 56px 0 0;
+  border-bottom: none;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  background: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  min-height: 48px;
+  box-sizing: border-box;
+  width: 100%;
+  position: relative;
+}
+
+.notification-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #e5e5e5;
+}
+
+.notification-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  padding: 12px 0 12px 16px;
+}
+
+.notification-header-right {
+  display: none;
+}
+
+.clear-all-btn {
+  background: linear-gradient(135deg, #00B18F 0%, #03836A 100%);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 177, 143, 0.25);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  font-family: 'Mont', sans-serif;
+  flex-shrink: 0;
+}
+
+.clear-all-btn:hover {
+  background: linear-gradient(135deg, #03836A 0%, #00B18F 100%);
+  box-shadow: 0 4px 12px rgba(0, 177, 143, 0.4);
+  transform: translateY(-1px);
+}
+
+.clear-all-btn:active {
+  box-shadow: 0 2px 6px rgba(0, 177, 143, 0.3);
+  transform: translateY(0);
+  transition: all 0.1s ease;
+}
+
+/* УСТАРЕЛО: заменено на .notification-close-btn */
+/* .close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #999;
+  padding: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  font-weight: 300;
+  line-height: 1;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 10;
+}
+
+.close-btn:hover {
+  background-color: rgba(255, 71, 87, 0.1);
+  color: #ff4757;
+  transform: scale(1.1);
+} */
+
+.notification-list {
+  max-height: 400px; /* Фиксированная высота списка */
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #00B18F #f0f0f0;
+  margin: 0;
+  padding: 0;
+  word-wrap: break-word;
+  flex: 1;
+}
+
+.notification-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.notification-list::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 3px;
+}
+
+.notification-list::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #00B18F, #03836A);
+  border-radius: 3px;
+}
+
+.notification-list::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #03836A, #00B18F);
+}
+
+.notification-item {
+  padding: 16px 56px 16px 16px; /* Увеличили паддинги для больше расстояния */
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  transition: background-color 0.2s ease;
+  position: relative;
+  min-height: 65px; /* Увеличили минимальную высоту */
+  margin-bottom: 4px; /* Добавили отступ между уведомлениями */
+  word-wrap: break-word; /* Переносим длинные слова */
+  overflow-wrap: break-word; /* Современный стандарт для переноса */
+}
+
+.notification-item:hover {
+  background-color: rgba(0, 177, 143, 0.08);
+}
+
+.notification-item.unread {
+  background-color: rgba(0, 177, 143, 0.12);
+  border-left: 4px solid #00B18F;
+  padding-left: 12px;
+}
+
+.notification-item.unread::before {
+  content: '';
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(135deg, #00B18F, #03836A);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 177, 143, 0.3);
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-content {
+  flex: 1;
+  margin-right: 8px;
+  margin-left: 0;
+  word-wrap: break-word; /* Переносим длинные слова */
+  overflow-wrap: break-word; /* Современный стандарт */
+  max-width: calc(100% - 40px); /* Ограничиваем ширину, оставляя место для кнопки удаления */
+}
+
+.notification-content p {
+  margin: 0 0 6px 0;
+  font-size: 14px;
+  color: #333;
+  line-height: 1.5;
+  font-family: 'Mont', sans-serif;
+  font-weight: 500;
+  word-wrap: break-word; /* Переносим длинные слова */
+  overflow-wrap: break-word; /* Современный стандарт */
+  white-space: normal; /* Разрешаем перенос строк */
+  max-width: 100%; /* Ограничиваем ширину */
+}
+
+.notification-content .notification-time {
+  margin: 4px 0 0 0;
+  font-size: 12px;
+  color: #666;
+  font-weight: 400;
+}
+
+.notification-time {
+  color: #666;
+  font-size: 11px;
+}
+
+/* УСТАРЕЛО: заменено на .notification-delete-btn */
+/* .delete-btn {
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  padding: 4px;
+  opacity: 0;
+  transition: all 0.2s ease;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  z-index: 5;
+}
+
+.notification-item:hover .delete-btn {
+  opacity: 1;
+}
+
+.delete-btn:hover {
+  color: #ff4757;
+  background-color: rgba(255, 71, 87, 0.1);
+  transform: translateY(-50%) scale(1.1);
+} */
+
+.no-notifications {
+  padding: 40px 20px;
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+  line-height: 1.4;
+  font-family: 'Mont', sans-serif;
+  font-weight: 500;
+  margin-left: 0;
+}
+
+/* Профиль пользователя */
+.profile-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.profile-wrapper:hover {
+  background-color: rgba(0, 177, 143, 0.05);
+}
+
+.profile-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #e5e5e5;
+  object-fit: cover;
+  transition: all 0.3s ease;
+  background-color: #FFFFFF;
+}
+
+.profile-wrapper:hover .profile-avatar {
+  border-color: #00B18F;
+  box-shadow: 0 2px 8px rgba(0, 177, 143, 0.2);
+}
+
+.profile-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.profile-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.profile-role {
+  font-size: 12px;
+  color: #00B18F;
+  line-height: 1.2;
+  margin: 0;
+  font-weight: 600;
+  background: rgba(0, 177, 143, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 177, 143, 0.2);
+}
+
+/* Мобильный компонент уведомлений */
+.mobile-notifications-wrapper {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-notifications-wrapper {
+    display: block;
+  }
+}
+@media (max-width: 768px) {
+  .topbar {
+    display: none; /* Скрываем TopBar на мобильных */
+  }
+  
+  /* Центрируем заголовок страницы на мобильных */
+  .page-title {
+    text-align: center !important;
+    width: 100% !important;
+    display: block !important;
+  }
+  
+  /* Показываем только уведомления на мобильных */
+  .topbar .notification-wrapper {
+    display: block !important;
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 1002;
+    background: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Мобильная кнопка уведомлений */
+  .notification-wrapper {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 1002;
+    background: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+  
+  .notification-btn {
+    background: #ffffff;
+    border: 2px solid rgba(0, 177, 143, 0.2);
+    padding: 12px;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 177, 143, 0.3);
+  }
+  
+  .notification-btn:hover {
+    background-color: #ffffff;
+    border-color: #00B18F;
+    box-shadow: 0 4px 12px rgba(0, 177, 143, 0.4);
+  }
+  
+  .bell-icon {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .notification-dropdown {
+    position: fixed;
+    top: 70px;
+    left: 10px;
+    right: 10px;
+    width: auto;
+    max-height: calc(100vh - 80px);
+    border-radius: 20px;
+    animation: mobileDropdownShow 0.1s ease-out;
+    overflow-x: hidden; /* Запрещаем горизонтальную прокрутку */
+    word-wrap: break-word;
+  }
+  
+  .notification-list {
+    max-height: calc(100vh - 140px);
+  }
+}
+
+@media (max-width: 480px) {
+  .topbar {
+    display: none; /* Скрываем TopBar на маленьких экранах */
+  }
+  
+  /* Мобильная кнопка уведомлений для маленьких экранов */
+  .notification-wrapper {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 1002;
+    background: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+  
+  .notification-btn {
+    background: #ffffff;
+    border: 2px solid rgba(0, 177, 143, 0.2);
+    padding: 10px;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 177, 143, 0.3);
+  }
+  
+  .notification-btn:hover {
+    background-color: #ffffff;
+    border-color: #00B18F;
+    box-shadow: 0 4px 12px rgba(0, 177, 143, 0.4);
+  }
+  
+  .profile-avatar {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .bell-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .notification-count {
+    min-width: 16px;
+    height: 16px;
+    font-size: 10px;
+    top: 0;
+    right: 0;
+  }
+  
+  .clear-all-btn {
+    font-size: 10px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    letter-spacing: 0.3px;
+  }
+  
+  .notification-dropdown {
+    position: fixed;
+    top: 65px;
+    left: 12px;
+    right: 12px;
+    width: auto;
+    max-width: none;
+    max-height: calc(100vh - 75px);
+    animation: mobileDropdownShow 0.1s ease-out;
+  }
+  
+  .notification-header {
+    padding: 0 48px 0 0;
+    min-height: 44px;
+  }
+  
+  .notification-header::after {
+    left: 0;
+    right: 0;
+  }
+  
+  .notification-header-left {
+    gap: 8px;
+    padding: 10px 0 10px 12px;
+  }
+  
+  /* УСТАРЕЛО: используйте .notification-close-btn */
+  /* .close-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 22px;
+    top: 6px;
+    right: 6px;
+  } */
+  
+  .notification-list {
+    max-height: calc(100vh - 120px);
+  }
+  
+  .notification-item {
+    padding: 18px 48px 18px 16px; /* Увеличили отступы для мобильных */
+    min-height: 75px; /* Больше места для многострочного текста */
+    margin-bottom: 6px; /* Больше расстояния между уведомлениями на мобильных */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  .notification-content {
+    margin-left: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: calc(100% - 35px); /* Оставляем место для кнопки удаления */
+  }
+  
+  .notification-content p {
+    font-size: 14px;
+    line-height: 1.6;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+  }
+  
+  .notification-content .notification-time {
+    font-size: 11px;
+  }
+}
+
+/* Стили для планшетов */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .notification-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 350px;
+    max-height: calc(100vh - 120px);
+    overflow-x: hidden;
+    word-wrap: break-word;
+  }
+  
+  .notification-list {
+    max-height: calc(350px - 48px);
+    overflow-x: hidden;
+    word-wrap: break-word;
+  }
+  
+  .notification-item {
+    padding: 16px 52px 16px 16px;
+    margin-bottom: 4px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  .notification-content {
+    margin-left: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: calc(100% - 40px);
+  }
+  
+  .notification-content p {
+    font-size: 14px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* Дополнительные стили для очень маленьких экранов */
+@media (max-width: 400px) {
+  /* Мобильная кнопка уведомлений для очень маленьких экранов */
+  .notification-wrapper {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1002;
+    background: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+  
+  .notification-btn {
+    background: #ffffff;
+    border: 2px solid rgba(0, 177, 143, 0.2);
+    padding: 8px;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 177, 143, 0.3);
+  }
+  
+  .notification-btn:hover {
+    background-color: #ffffff;
+    border-color: #00B18F;
+    box-shadow: 0 4px 12px rgba(0, 177, 143, 0.4);
+  }
+  
+  .bell-icon {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .notification-count {
+    min-width: 14px;
+    height: 14px;
+    font-size: 9px;
+    top: -2px;
+    right: -2px;
+  }
+  
+  .notification-dropdown {
+    position: fixed;
+    top: 60px;
+    left: 8px;
+    right: 8px;
+    width: auto;
+    max-height: calc(100vh - 70px);
+    animation: mobileDropdownShow 0.1s ease-out;
+  }
+  
+  .notification-list {
+    max-height: calc(100vh - 110px);
+  }
+  
+  .notification-header {
+    padding: 0 40px 0 0;
+    min-height: 40px;
+  }
+  
+  .notification-header::after {
+    left: 0;
+    right: 0;
+  }
+  
+  .notification-header-left {
+    gap: 6px;
+    padding: 8px 0 8px 10px;
+  }
+  
+  /* УСТАРЕЛО: используйте .notification-close-btn */
+  /* .close-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+    top: 6px;
+    right: 6px;
+  } */
+  
+  .clear-all-btn {
+    font-size: 9px;
+    padding: 5px 8px;
+  }
+}
+
+
+/* — убрать лишнюю высоту в шапке списка уведомлений — */
+.notification-header{
+  min-height: 0 !important;      /* не фиксируем высоту */
+  padding: 0 48px 0 0 !important;/* убираем вертикальные паддинги */
+}
+
+.notification-header-left{
+  padding: 6px 0 6px 16px !important; /* компактнее, только по 6px сверху/снизу */
+  align-items: center;                 /* ровняем кнопку по центру по высоте */
+}
+
+/* на мобильных ещё компактнее */
+@media (max-width: 480px){
+  .notification-header{ padding: 0 40px 0 0 !important; }
+  .notification-header-left{ padding: 6px 0 6px 12px !important; }
+}
+
+/* на всякий случай, чтобы список не добавлял отступ сверху */
+.notification-list{
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* ============================================
+   ОБЩИЕ СТИЛИ ДЛЯ ПЕРЕНОСА ТЕКСТА В УВЕДОМЛЕНИЯХ
+   ============================================ */
+
+/* Гарантируем правильный перенос текста во всех уведомлениях */
+.notification-dropdown,
+.notification-list,
+.notification-item,
+.notification-content,
+.notification-content p {
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
+  word-break: break-word !important;
+  hyphens: auto !important;
+  -webkit-hyphens: auto !important;
+  -ms-hyphens: auto !important;
+}
+
+/* Исключаем горизонтальную прокрутку */
+.notification-dropdown,
+.notification-list {
+  overflow-x: hidden !important;
+}
+
+/* Нормальный перенос строк */
+.notification-content p {
+  white-space: normal !important;
+}
+
+/* ============================================
+   СТИЛИ ДЛЯ КНОПОК В УВЕДОМЛЕНИЯХ
+   ============================================ */
+
+/* Кнопка закрытия панели уведомлений */
+.notification-close-btn {
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #999;
+  padding: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  font-weight: 300;
+  line-height: 1;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 10;
+}
+
+.notification-close-btn:hover {
+  background-color: rgba(255, 71, 87, 0.1);
+  color: #ff4757;
+  transform: scale(1.1);
+}
+
+.notification-close-btn:active {
+  transform: scale(0.95);
+}
+
+/* Кнопка удаления отдельного уведомления */
+.notification-delete-btn {
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  padding: 4px;
+  opacity: 0;
+  transition: all 0.2s ease;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  z-index: 5;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.notification-item:hover .notification-delete-btn {
+  opacity: 1;
+}
+
+.notification-delete-btn:hover {
+  color: #ff4757;
+  background-color: rgba(255, 71, 87, 0.1);
+  transform: translateY(-50%) scale(1.15);
+}
+
+.notification-delete-btn:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 480px) {
+  .notification-close-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 26px;
+    top: 0px;
+    right: 6px;
+  }
+  
+  .notification-delete-btn {
+    width: 26px;
+    height: 26px;
+    font-size: 18px;
+    right: 14px;
+    opacity: 1; /* На мобильных всегда показываем */
+  }
+}
+
+@media (max-width: 400px) {
+  .notification-close-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 24px;
+    top: 0px;
+    right: 6px;
+  }
+  
+  .notification-delete-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 16px;
+    right: 12px;
+  }
+}
